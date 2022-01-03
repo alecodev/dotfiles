@@ -1,6 +1,10 @@
 # Dotfiles in Arch Linux
 
-##	Arch Linux installation
+***Languages***
+- [🇪🇸 - Español](./README.es.md)
+- **🇪🇳 - English**
+
+## Arch Linux installation
 For more information on the installation process visit [Arch's guide](https://wiki.archlinux.org/title/Installation_guide)
 
 >If you are installing on a virtual machine
@@ -41,10 +45,10 @@ cfdisk /dev/sda
 
 Select GPT and create the following partitions (the size depends on the use you want to give it), remember to write before exiting
 ```
-512M		EFI System			(This will be the size of the system boot partition)
-16G			Linux Swap			(This will be the size of the SWAP memory, it is recommended to double the size of the RAM memory)
-40G			Linux filesystem	(This will be the size assigned to /)
-63.5G		Linux filesystem	(This will be the size assigned to /home)
+512M      EFI System         (This will be the size of the system boot partition)
+16G       Linux Swap         (This will be the size of the SWAP memory, it is recommended to double the size of the RAM memory)
+40G       Linux filesystem   (This will be the size assigned to /)
+63.5G     Linux filesystem   (This will be the size assigned to /home)
 write
 ```
 
@@ -77,7 +81,7 @@ lsblk
 
 Install the basic packages
 ```bash
-pacstrap /mnt base linux linux-firmware nano vim dhcpcd
+pacstrap /mnt base base-devel linux linux-firmware nano vim dhcpcd
 ```
 
 Generate the Fstab file
@@ -158,7 +162,7 @@ reboot
 ```
 
 ---
-##	Install Window Manager
+## Install Window Manager
 
 Login with the root user and run the following commands
 ```bash
@@ -212,8 +216,8 @@ Create the bspwm configuration directories in the other user and copy the files 
 ```bash
 su alejo
 mkdir -p ~/.config/{bspwm,sxhkd}
-sudo cp /root/.config/bspwmrc ~/.config/bspwm && sudo chown alejo:alejo ~/.config/bspwm/bspwmrc
-sudo cp /root/.config/sxhkdrc ~/.config/sxhkd && sudo chown alejo:alejo ~/.config/sxhkd/sxhkdrc
+sudo cp /root/.config/bspwm/bspwmrc ~/.config/bspwm && sudo chown alejo:alejo ~/.config/bspwm/bspwmrc
+sudo cp /root/.config/sxhkd/sxhkdrc ~/.config/sxhkd && sudo chown alejo:alejo ~/.config/sxhkd/sxhkdrc
 sudo cp /root/.xprofile ~/.xprofile && sudo chown alejo:alejo ~/.xprofile
 ```
 
