@@ -303,3 +303,154 @@ reboot
 ```
 
 Ready now you can log in with the other user and use bspwm by pressing `Super + Enter`
+
+---
+## Setting up the work environment
+
+### Install Firefox
+```bash
+sudo su
+pacman -Syu
+pacman -S wget curl libstdc++5 dbus-glib unzip firejail
+cd /
+chown alejo:alejo opt/
+cd !$
+su alejo
+```
+
+Get the download URL of the Firefox tar.* file `curl "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"` and change it in the following command
+```bash
+wget "https://download-installer.cdn.mozilla.net/pub/firefox/releases/95.0.2/linux-x86_64/en-US/firefox-95.0.2.tar.bz2"
+tar -xf firefox-*
+rm firefox-*
+mkdir -p ~/Downloads/Firefox
+```
+
+Change the download directory in Firefox settings to `~/Downloads/Firefox`
+
+Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Open Firefox
+super + shift + f
+        firejail /opt/firefox/firefox
+```
+
+Press `Super + esc` and open Firefox with `Super + Shift + f`
+
+### Install Hack nerd fonts
+Download the font ***Hack Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
+```bash
+sudo su
+mkdir /usr/local/share/fonts
+cd /usr/local/share/fonts
+mv /home/alejo/Downloads/Hack.zip .
+unzip Hack.zip
+rm Hack.zip
+```
+
+Copy the configuration file from alacritty
+```bash
+su alejo
+cp /usr/share/doc/alacritty/example/alacritty.yml ~/.config/alacritty/
+```
+
+Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) and modify the following lines
+```diff
+# Font configuration
+-#font:
++font:
+  # Normal (roman) font face
+-  #normal:
++  normal:
+    # Font family
+    #
+    # Default:
+    #   - (macOS) Menlo
+    #   - (Linux/BSD) monospace
+    #   - (Windows) Consolas
+-    #family: monospace
++    family: Hack Nerd Font
+
+    # The `style` can be specified to pick a specific face.
+-    #style: Regular
++    style: Regular
+
+  # Bold font face
+-  #bold:
++  bold:
+    # Font family
+    #
+    # If the bold family is not specified, it will fall back to the
+    # value specified for the normal font.
+-    #family: monospace
++    family: Hack Nerd Font
+
+    # The `style` can be specified to pick a specific face.
+-    #style: Bold
++    style: Bold
+
+  # Italic font face
+-  #italic:
++  italic:
+    # Font family
+    #
+    # If the italic family is not specified, it will fall back to the
+    # value specified for the normal font.
+-    #family: monospace
++    family: Hack Nerd Font
+
+    # The `style` can be specified to pick a specific face.
+-    #style: Italic
++    style: Italic
+
+  # Bold italic font face
+-  #bold_italic:
++  bold_italic:
+    # Font family
+    #
+    # If the bold italic family is not specified, it will fall back to the
+    # value specified for the normal font.
+-    #family: monospace
++    family: Hack Nerd Font
+
+    # The `style` can be specified to pick a specific face.
+-    #style: Bold Italic
++    style: Bold Italic
+
+  # Point size
+-  #size: 11.0
++  size: 12
+```
+
+### Install Visual Studio Code
+Download file tar.gz from the page `https://code.visualstudio.com/Download` and install with the following commands
+```bash
+sudo pacman -S electron
+cd /opt
+mv ~/Downloads/Firefox/code-*.tar.gz .
+tar -xf code-*.tar.gz
+rm code-*.tar.gz
+cd ~
+```
+
+Edit file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Additional path for VScode
+export PATH=$PATH:/opt/VSCode-linux-x64/bin
+```
+
+### Set Wallpaper
+```bash
+sudo pacman -S feh
+mkdir -p ~/Desktop/alejo/Images
+```
+
+Download wallpaper in Images and edit `~/.config/bspwm/bspwmrc` and add next line
+```text
+feh --bg-fill /home/alejo/Desktop/alejo/Images/wallpaper.jpg
+```
+
+### Install Neofetch
+```bash
+sudo pacman -S neofetch
+```
