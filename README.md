@@ -182,24 +182,58 @@ Activate the lightdm service
 systemctl enable lightdm
 ```
 
-Create o edit file ```~/.xprofile``` with editor text (vim, nano, ...) and set the following lines
+Change user
+```bash
+su alejo
+```
+
+Create or edit the file `~/.xprofile` with editor text (vim, nano, ...) and set the following lines
 ```text
 VBoxClient-all &
 sxhkd &
 exec bspwm
 ```
 
-Create the directories and configuration files of bspwm
+Create or edit the file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Alias list all files
+alias la='ls -Alh'
+```
+
+Create the directories and configuration files of bspwm, sxhkd, polybar and alacritty
 ```bash
-mkdir -p ~/.config/{bspwm,sxhkd}
+mkdir -p ~/.config/{bspwm,sxhkd,polybar,alacritty}
 cd /usr/share/doc/bspwm/examples
 cp bspwmrc ~/.config/bspwm
 cp sxhkdrc ~/.config/sxhkd
 cd ~
 chmod +x ~/.config/bspwm/bspwmrc
+mkdir ~/.config/bspwm/scripts
+touch ~/.config/bspwm/scripts/bspwm_resize
+chmod +x ~/.config/bspwm/scripts/bspwm_resize
 ```
 
-Edit file ```~/.config/sxhkd/sxhkdrc``` with editor text (vim, nano, ...) and modify the following lines
+Edit file `~/.config/bspwm/scripts/bspwm_resize` with editor text (vim, nano, ...) and add the following lines
+```bash
+#!/usr/bin/env bash
+
+if bspc query -N -n focused.floating > /dev/null; then
+	step=20
+else
+	step=100
+fi
+
+case "$1" in
+	west) dir=right; falldir=left; x="-$step"; y=0;;
+	east) dir=right; falldir=left; x="$step"; y=0;;
+	north) dir=top; falldir=bottom; x=0; y="-$step";;
+	south) dir=top; falldir=bottom; x=0; y="$step";;
+esac
+
+bspc node -z "$dir" "$x" "$y" || bspc node -z "$falldir" "$x" "$y"
+```
+
+Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and modify the following lines
 ```diff
 # terminal emulator
 super + Return
@@ -207,18 +241,60 @@ super + Return
 +	alacritty
 
 # program launcher
-super + @space
+-super + @space
 -	dmenu_run
++super + d
 +	rofi -show run
+
+...
+
+# focus the node in the given direction
+-super + {_,shift + }{h,j,k,l}
++super + {_,shift + }{Left,Down,Up,Right}
+
+...
+
+# preselect the direction
+-super + ctrl + {h,j,k,l}
++super + ctrl + alt + {Left,Down,Up,Right}
+
+...
+
+# cancel the preselection for the focused desktop
+-super + ctrl + shift + space
++super + ctrl + alt + space
+
+...
+
+# expand a window by moving one of its side outward
+-super + alt + {h,j,k,l}
+-	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
++#super + alt + {h,j,k,l}
++#	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+-super + alt + shift + {h,j,k,l}
+-	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
++#super + alt + shift + {h,j,k,l}
++#	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+-super + {Left,Down,Up,Right}
++super + ctrl + {Left,Down,Up,Right}
+
++# Custom Move - Resize
++alt + super + {Left,Down,Up,Right}
++	/home/alejo/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
 ```
 
 Create the bspwm configuration directories in the other user and copy the files (in my case 'alejo')
 ```bash
-su alejo
-mkdir -p ~/.config/{bspwm,sxhkd}
-sudo cp /root/.config/bspwm/bspwmrc ~/.config/bspwm && sudo chown alejo:alejo ~/.config/bspwm/bspwmrc
-sudo cp /root/.config/sxhkd/sxhkdrc ~/.config/sxhkd && sudo chown alejo:alejo ~/.config/sxhkd/sxhkdrc
-sudo cp /root/.xprofile ~/.xprofile && sudo chown alejo:alejo ~/.xprofile
+sudo su
+ln -s /home/alejo/.config/{bspwm,sxhkd,polybar,alacritty} ~/.config/
+rm ~/.xprofile
+ln -s /home/alejo/.xprofile ~/
+rm ~/.bashrc
+ln -s /home/alejo/.bashrc ~/
 ```
 
 Reboot and log in with the other user
