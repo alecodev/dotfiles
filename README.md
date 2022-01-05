@@ -167,7 +167,40 @@ reboot
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh
+pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim
+```
+
+Configure zsh and history
+```bash
+touch ~/{.zshrc,.zsh_history}
+sudo su
+touch ~/{.zshrc,.zsh_history}
+```
+
+Create or edit the file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/alejo/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# Alias list files
+alias ls='ls -lh --color=auto'
+
+# Alias list all files
+alias la='ls -Alh'
+
+# Additional path for VScode
+export PATH=$PATH:/opt/VSCode-linux-x64/bin
 ```
 
 Edit the file `/etc/lightdm/lightdm.conf` with the editor text (vim, nano, ...) and set the following lines
@@ -335,17 +368,38 @@ super + shift + f
         firejail /opt/firefox/firefox
 ```
 
-Press `Super + esc` and open Firefox with `Super + Shift + f`
+Press `Super + Alt + r` and  `Super + esc`, open Firefox with `Super + Shift + f`
 
-### Install Hack nerd fonts
-Download the font ***Hack Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
+### Install Fonts
 ```bash
 sudo su
-mkdir /usr/local/share/fonts
-cd /usr/local/share/fonts
-mv /home/alejo/Downloads/Hack.zip .
-unzip Hack.zip
-rm Hack.zip
+```
+
+- #### ***Hack Nerd Font***
+	---
+	Download the font ***Hack Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
+	```bash
+	mkdir -p /usr/local/share/fonts/nerd-fonts/Hack
+	cd !$
+	mv /home/alejo/Downloads/Firefox/Hack.zip .
+	unzip Hack.zip
+	rm Hack.zip
+	```
+
+- #### ***Meslo Nerd Font***
+	---
+	Download the font ***Meslo Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
+	```bash
+	mkdir -p /usr/local/share/fonts/nerd-fonts/Meslo
+	cd !$
+	mv /home/alejo/Downloads/Firefox/Meslo.zip .
+	unzip Meslo.zip
+	rm Meslo.zip
+	```
+
+Reload fonts
+```bash
+fc-cache -vf
 ```
 
 Copy the configuration file from alacritty
@@ -369,7 +423,7 @@ Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) 
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
 -    #family: monospace
-+    family: Hack Nerd Font
++    family: "Hack Nerd Font Mono"
 
     # The `style` can be specified to pick a specific face.
 -    #style: Regular
@@ -383,7 +437,7 @@ Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) 
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
 -    #family: monospace
-+    family: Hack Nerd Font
++    family: "Hack Nerd Font Mono"
 
     # The `style` can be specified to pick a specific face.
 -    #style: Bold
@@ -397,7 +451,7 @@ Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) 
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
 -    #family: monospace
-+    family: Hack Nerd Font
++    family: "Hack Nerd Font Mono"
 
     # The `style` can be specified to pick a specific face.
 -    #style: Italic
@@ -411,7 +465,7 @@ Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) 
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
 -    #family: monospace
-+    family: Hack Nerd Font
++    family: "Hack Nerd Font Mono"
 
     # The `style` can be specified to pick a specific face.
 -    #style: Bold Italic
@@ -453,4 +507,50 @@ feh --bg-fill /home/alejo/Desktop/alejo/Images/wallpaper.jpg
 ### Install Neofetch
 ```bash
 sudo pacman -S neofetch
+```
+
+### Install Polybar
+```bash
+sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl
+cd ~/Downloads/Firefox/
+
+git clone --recursive https://github.com/polybar/polybar
+cd polybar
+
+mkdir build
+cd build
+cmake ..
+make -j$(nproc)
+sudo make install
+```
+
+### Install Picom
+```bash
+sudo pacman -S meson libx11 libxext libconfig libdbus libev pixman uthash xcb-util-image xcb-util-renderutil libgl pcre asciidoc mesa ninja dbus xorg-xprop xorg-xwininfo
+cd ~/Downloads/Firefox/
+
+git clone https://github.com/yshui/picom.git
+cd picom
+
+git submodule update --init --recursive
+meson --buildtype=release . build
+ninja -C build
+sudo ninja -C build install
+```
+
+### Install Powerlevel10k
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+zsh
+
+sudo su
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+zsh
+
+ln -sf /home/alejo/.zshrc ~/
+
+usermod --shell /usr/bin/zsh alejo
+usermod --shell /usr/bin/zsh root
 ```
