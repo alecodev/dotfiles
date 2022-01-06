@@ -170,6 +170,18 @@ pacman -Syu
 pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop
 ```
 
+Edit file `/etc/pacman.conf` with editor text (vim, nano, ...) and modify the following lines
+```diff
+# Misc options
+#UseSyslog
+-#Color
++Color
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
++ILoveCandy
+```
+
 Configure zsh and history
 ```bash
 touch ~/{.zshrc,.zsh_history}
@@ -644,4 +656,24 @@ Enable the service
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
 ssh-add ~/.ssh/id_rsa
+```
+
+### Install Google Chrome
+```zsh
+mkdir -p ~/Downloads/Chrome
+cd !$
+git clone https://aur.archlinux.org/google-chrome.git
+cd google-chrome
+makepkg -si
+cd ..
+rm -r google-chrome
+```
+
+Change the download directory in Chrome settings to `~/Downloads/Chrome`
+
+Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Open Chrome
+super + shift + g
+        firejail /usr/bin/google-chrome-stable
 ```
