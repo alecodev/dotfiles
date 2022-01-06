@@ -278,8 +278,8 @@ cp sxhkdrc ~/.config/sxhkd
 cd ~
 chmod +x ~/.config/bspwm/bspwmrc
 mkdir ~/.config/bspwm/scripts
-touch ~/.config/bspwm/scripts/bspwm_resize
-chmod +x ~/.config/bspwm/scripts/bspwm_resize
+touch ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
+chmod +x ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
 ```
 
 Edit file `~/.config/bspwm/scripts/bspwm_resize` with editor text (vim, nano, ...) and add the following lines
@@ -300,6 +300,53 @@ case "$1" in
 esac
 
 bspc node -z "$dir" "$x" "$y" || bspc node -z "$falldir" "$x" "$y"
+```
+
+Edit file `~/.config/bspwm/scripts/bspwm_smart_move` with editor text (vim, nano, ...) and add the following lines
+```bash
+#!/bin/bash
+
+# based on https://gitlab.com/protesilaos/dotfiles/-/blob/v2.2.0/bin/bin/bspwm_smart_move
+
+[ "$#" -eq 1 ] || { echo "Pass only one argument: north,east,south,west"; exit 1; }
+
+# Check if argument is a valid direction.
+case "$1" in
+    north|east|south|west)
+        dir="$1"
+        ;;
+    *)
+        echo "Not a valid argument."
+        echo "Use one of: north,east,south,west"
+        exit 1
+        ;;
+esac
+
+_query_nodes() {
+    bspc query -N -n "$@"
+}
+
+# Do not operate on floating windows!
+#[ -z "$(_query_nodes focused.floating)" ] || { echo "Only move tiled windows."; exit 1; }
+
+receptacle="$(_query_nodes 'any.leaf.!window')"
+
+# This regulates the behaviour documented in the description.
+if [ -n "$(_query_nodes focused.floating)" ]; then
+    case "$1" in
+        west) x=-20; y=0;;
+        south) x=0; y=20;;
+        north) x=0; y=-20;;
+        east) x=20; y=0;;
+    esac
+    bspc node -v "$x" "$y"
+elif [ -n "$(_query_nodes "${dir}.!floating")" ]; then
+    bspc node -s "$dir"
+elif [ -n "$receptacle" ]; then
+    bspc node focused -n "$receptacle" --follow
+else
+    bspc node @/ -p "$dir" -i && bspc node -n "$receptacle" --follow
+fi
 ```
 
 Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and modify the following lines
@@ -349,9 +396,15 @@ super + Return
 
 # move a floating window
 -super + {Left,Down,Up,Right}
-+super + ctrl + {Left,Down,Up,Right}
+-       bspc node -v {-20 0,0 20,0 -20,20 0}
++#super + {Left,Down,Up,Right}
++#       bspc node -v {-20 0,0 20,0 -20,20 0}
 
-+# Custom Move - Resize
++# Custom move window
++super + ctrl + {Left,Down,Up,Right}
++        /home/alejo/.config/bspwm/scripts/bspwm_smart_move {west,south,north,east}
+
++# Custom resize window
 +alt + super + {Left,Down,Up,Right}
 +	/home/alejo/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
 ```
