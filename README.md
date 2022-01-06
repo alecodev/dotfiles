@@ -167,7 +167,7 @@ reboot
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim
+pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop
 ```
 
 Configure zsh and history
@@ -178,7 +178,7 @@ touch ~/{.zshrc,.zsh_history}
 ```
 
 Create or edit the file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
-```text
+```zsh
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
@@ -193,14 +193,13 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# Alias list files
-alias ls='ls -lh --color=auto'
-
-# Alias list all files
-alias la='ls -Alh'
-
-# Additional path for VScode
-export PATH=$PATH:/opt/VSCode-linux-x64/bin
+bindkey "^[[3~" delete-char                     # Key Del
+bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
+bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
+bindkey "^[[H" beginning-of-line                # Key Home
+bindkey "^[[F" end-of-line                      # Key End
+bindkey "^[[1;3C" forward-word                  # Key Alt + Right
+bindkey "^[[1;3D" backward-word                 # Key Alt + Left
 ```
 
 Edit the file `/etc/lightdm/lightdm.conf` with the editor text (vim, nano, ...) and set the following lines
@@ -228,7 +227,7 @@ exec bspwm
 ```
 
 Create or edit the file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
-```text
+```bash
 # Alias list all files
 alias la='ls -Alh'
 ```
@@ -487,8 +486,8 @@ rm code-*.tar.gz
 cd ~
 ```
 
-Edit file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
-```text
+Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```bash
 # Additional path for VScode
 export PATH=$PATH:/opt/VSCode-linux-x64/bin
 ```
@@ -511,7 +510,7 @@ sudo pacman -S neofetch
 
 ### Install Polybar
 ```bash
-sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl
+sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl pulseaudio
 cd ~/Downloads/Firefox/
 
 git clone --recursive https://github.com/polybar/polybar
@@ -553,4 +552,96 @@ ln -sf /home/alejo/.zshrc ~/
 
 usermod --shell /usr/bin/zsh alejo
 usermod --shell /usr/bin/zsh root
+su alejo
+```
+
+### Install bat
+```zsh
+sudo pacman -S bat
+```
+
+Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+# Alias cat
+alias cat='/bin/bat'
+alias catn='/bin/cat'
+alias catnl='/bin/bat --paging=never'
+```
+
+### Install lsd
+```zsh
+sudo pacman -S lsd
+```
+
+Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+# Alias ls
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lh --group-dirs=first'
+alias la='lsd -Alh --group-dirs=first'
+alias l='lsd --group-dirs=first'
+```
+
+### Install fzf
+```zsh
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+sudo su
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
+
+### Install sudo zsh plugin
+```zsh
+sudo su
+mkdir -p /usr/share/zsh-plugins
+cd !$
+chown alejo:alejo /usr/share/zsh-plugins
+su alejo
+wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+```
+
+Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+source /usr/share/zsh-plugins/sudo.plugin.zsh
+```
+
+### Install SSH
+```zsh
+sudo pacman -S openssh
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+mkdir -p ~/.config/systemd/user/
+touch ~/.config/systemd/user/ssh-agent.service
+touch ~/.ssh/config
+chmod 600 .ssh/config
+echo "# host-specific options\n" >> ~/.ssh/config
+```
+
+Edit file `~/.config/systemd/user/ssh-agent.service` with editor text (vim, nano, ...) and add the following lines
+```zsh
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=simple
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+# DISPLAY required for ssh-askpass to work
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target
+```
+
+Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+# Service ssh-agent
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+```
+
+Enable the service
+```zsh
+systemctl --user enable ssh-agent
+systemctl --user start ssh-agent
+ssh-add ~/.ssh/id_rsa
 ```
