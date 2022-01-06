@@ -182,11 +182,11 @@ CheckSpace
 +ILoveCandy
 ```
 
-Configure zsh and history
+Configure alias, zsh and history
 ```bash
-touch ~/{.zshrc,.zsh_history}
+touch ~/{.aliases,.zshrc,.zsh_history}
 sudo su
-touch ~/{.zshrc,.zsh_history}
+touch ~/{.aliases,.zshrc,.zsh_history}
 ```
 
 Create or edit the file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
@@ -238,10 +238,35 @@ sxhkd &
 exec bspwm
 ```
 
+Create or edit the file `~/.aliases` with editor text (vim, nano, ...) and add the following lines
+```bash
+# ls
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lh --group-dirs=first'
+alias la='lsd -Alh --group-dirs=first'
+alias l='lsd --group-dirs=first'
+
+# cat
+alias cat='/bin/bat'
+alias catn='/bin/cat'
+alias catnl='/bin/bat --paging=never'
+
+# diff
+alias diff='/usr/bin/diff --color=auto'
+
+# cd
+alias cd..='cd ..'
+
+# Colorize the grep command output for ease of use (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+```
+
 Create or edit the file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
 ```bash
-# Alias list all files
-alias la='ls -Alh'
+# Alias
+source ~/.aliases
 ```
 
 Create the directories and configuration files of bspwm, sxhkd, polybar and alacritty
@@ -334,6 +359,7 @@ super + Return
 Create the bspwm configuration directories in the other user and copy the files (in my case 'alejo')
 ```bash
 sudo su
+ln -sf /home/alejo/.aliases ~/
 ln -s /home/alejo/.config/{bspwm,sxhkd,polybar,alacritty} ~/.config/
 rm ~/.xprofile
 ln -s /home/alejo/.xprofile ~/
@@ -355,7 +381,7 @@ Ready now you can log in with the other user and use bspwm by pressing `Super + 
 ```bash
 sudo su
 pacman -Syu
-pacman -S wget curl libstdc++5 dbus-glib unzip firejail
+pacman -S wget curl libstdc++5 dbus-glib unzip p7zip firejail
 cd /
 chown alejo:alejo opt/
 cd !$
@@ -574,24 +600,13 @@ sudo pacman -S bat
 
 Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
 ```zsh
-# Alias cat
-alias cat='/bin/bat'
-alias catn='/bin/cat'
-alias catnl='/bin/bat --paging=never'
+# Alias
+source ~/.aliases
 ```
 
 ### Install lsd
 ```zsh
 sudo pacman -S lsd
-```
-
-Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
-```zsh
-# Alias ls
-alias ls='lsd --group-dirs=first'
-alias ll='lsd -lh --group-dirs=first'
-alias la='lsd -Alh --group-dirs=first'
-alias l='lsd --group-dirs=first'
 ```
 
 ### Install fzf
