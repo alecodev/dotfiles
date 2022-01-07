@@ -167,7 +167,7 @@ reboot
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop
+pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev
 ```
 
 Edit file `/etc/pacman.conf` with editor text (vim, nano, ...) and modify the following lines
@@ -369,6 +369,18 @@ super + Return
 +super + {_,shift + }{Left,Down,Up,Right}
 
 ...
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+        bspc {desktop -f,node -d} '^{1-9,10}'
+
++# Custom numpad focus or send to the given desktop
++super + {_,shift + }KP_{1-9,End,Down,Next,Left,Begin,Right,Home,Up,Prior,0,Insert}
++        bspc {desktop -f,node -d} '^{1-9,1,2,3,4,5,6,7,8,9,10,10}'
+
+#
+# preselect
+#
 
 # preselect the direction
 -super + ctrl + {h,j,k,l}
