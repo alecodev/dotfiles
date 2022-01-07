@@ -743,5 +743,14 @@ Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add th
 ```text
 # Open Chrome
 super + shift + g
-        firejail /usr/bin/google-chrome-stable
+        firejail /usr/bin/google-chrome-stable --force-dark-mode
+```
+
+# Install Mysql Workbench
+```zsh
+sudo pacman -S mysql-workbench gnome-keyring
+sudo su
+cd /usr/share/mysql-workbench/data
+mv code_editor.xml code_editor.xml_original
+wget https://raw.githubusercontent.com/mleandrojr/mysql-workbench-dark-theme/master/code_editor.xml
 ```
