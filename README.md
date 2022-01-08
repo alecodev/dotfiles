@@ -743,6 +743,7 @@ ssh-add ~/.ssh/id_rsa
 
 ### Install Google Chrome
 ```zsh
+sudo pacman -S noto-fonts-emoji
 mkdir -p ~/Downloads/Chrome
 cd !$
 git clone https://aur.archlinux.org/google-chrome.git
