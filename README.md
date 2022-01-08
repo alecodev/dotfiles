@@ -359,7 +359,7 @@ super + Return
 # program launcher
 -super + @space
 -	dmenu_run
-+super + d
++super + r
 +	rofi -show run
 
 ...
@@ -450,6 +450,8 @@ pacman -S wget curl libstdc++5 dbus-glib unzip p7zip firejail
 cd /
 chown alejo:alejo opt/
 cd !$
+touch /usr/bin/firefox
+chmod 755 /usr/bin/firefox
 su alejo
 ```
 
@@ -461,13 +463,19 @@ rm firefox-*
 mkdir -p ~/Downloads/Firefox
 ```
 
+Edit file `/usr/bin/firefox` with editor text (vim, nano, ...) and add the following lines
+```text
+#!/bin/bash
+exec firejail /opt/firefox/firefox
+```
+
 Change the download directory in Firefox settings to `~/Downloads/Firefox`
 
 Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
 ```text
 # Open Firefox
 super + shift + f
-        firejail /opt/firefox/firefox
+        /usr/bin/firefox
 ```
 
 Press `Super + Alt + r` and  `Super + esc`, open Firefox with `Super + Shift + f`
@@ -587,12 +595,7 @@ mv ~/Downloads/Firefox/code-*.tar.gz .
 tar -xf code-*.tar.gz
 rm code-*.tar.gz
 cd ~
-```
-
-Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
-```bash
-# Additional path for VScode
-export PATH=$PATH:/opt/VSCode-linux-x64/bin
+ln -s /opt/VSCode-linux-x64/bin/code /usr/bin/
 ```
 
 ### Set Wallpaper
@@ -747,6 +750,14 @@ cd google-chrome
 makepkg -si
 cd ..
 rm -r google-chrome
+sudo su
+```
+
+Edit file `/usr/bin/google-chrome-stable` with editor text (vim, nano, ...) and add the following lines
+```diff
+# Launch
+-exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@"
++exec firejail /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@" --force-dark-mode
 ```
 
 Change the download directory in Chrome settings to `~/Downloads/Chrome`
@@ -755,7 +766,7 @@ Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add th
 ```text
 # Open Chrome
 super + shift + g
-        firejail /usr/bin/google-chrome-stable --force-dark-mode
+        /usr/bin/google-chrome-stable
 ```
 
 # Install Mysql Workbench
