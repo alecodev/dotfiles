@@ -167,7 +167,7 @@ reboot
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev
+pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev
 ```
 
 Edit file `/etc/pacman.conf` with editor text (vim, nano, ...) and modify the following lines
@@ -773,6 +773,7 @@ super + shift + g
 # Install Mysql Workbench
 ```zsh
 sudo pacman -S mysql-workbench gnome-keyring
+dbus-update-activation-environment --systemd DISPLAY
 sudo su
 cd /usr/share/mysql-workbench/data
 mv code_editor.xml code_editor.xml_original
@@ -783,6 +784,7 @@ wget https://raw.githubusercontent.com/mleandrojr/mysql-workbench-dark-theme/mas
 ```zsh
 gpg --full-generate-key
 git config --global commit.gpgsign true
+git config --global credential.helper /usr/lib/git-core/git-credential-libsecret
 ```
 
 GPG key is added to git
@@ -791,8 +793,14 @@ gpg --list-secret-keys --keyid-format=long
 git config --global user.signingkey YOURKEY
 ```
 
-Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
 ```zsh
 #  GPG key
 export GPG_TTY=$(tty)
+```
+
+Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+#  GPG key
+export GPG_TTY=$TTY
 ```
