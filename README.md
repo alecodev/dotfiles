@@ -790,3 +790,9 @@ GPG key is added to git
 gpg --list-secret-keys --keyid-format=long
 git config --global user.signingkey YOURKEY
 ```
+
+Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+```zsh
+#  GPG key
+export GPG_TTY=$(tty)
+```
