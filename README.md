@@ -2,7 +2,7 @@
 
 ***Languages***
 - [🇪🇸 - Español](./README.es.md)
-- **🇪🇳 - English**
+- **🇺🇸 - English**
 
 ## Arch Linux installation
 For more information on the installation process visit [Arch's guide](https://wiki.archlinux.org/title/Installation_guide)
@@ -777,4 +777,16 @@ sudo su
 cd /usr/share/mysql-workbench/data
 mv code_editor.xml code_editor.xml_original
 wget https://raw.githubusercontent.com/mleandrojr/mysql-workbench-dark-theme/master/code_editor.xml
+```
+
+# Generating a GPG key
+```zsh
+gpg --full-generate-key
+git config --global commit.gpgsign true
+```
+
+GPG key is added to git
+```zsh
+gpg --list-secret-keys --keyid-format=long
+git config --global user.signingkey YOURKEY
 ```
