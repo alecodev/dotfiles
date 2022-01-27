@@ -142,6 +142,7 @@ Activate the sudo group by executing the following command `EDITOR=vim visudo` a
 
 >In case of running in a virtual machine like VirtualBox run the following command
 >```bash
+>usermod -aG vboxsf alejo
 >pacman -S virtualbox-guest-utils
 >systemctl enable vboxservice
 >```
@@ -797,10 +798,39 @@ Edit file `~/.bashrc` with editor text (vim, nano, ...) and add the following li
 ```zsh
 #  GPG key
 export GPG_TTY=$(tty)
+
+# Editor Default
+export EDITOR="/usr/bin/nvim"
+export VISUAL="$EDITOR"
 ```
 
 Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
 ```zsh
 #  GPG key
 export GPG_TTY=$TTY
+
+# Editor Default
+export EDITOR="/usr/bin/nvim"
+export VISUAL="$EDITOR"
+```
+
+# Install Flameshot
+```zsh
+sudo pacman -S flameshot
+```
+
+Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+```text
+# Open Flameshot
+super + shift + s
+        /usr/bin/flameshot gui
+```
+
+# Install Docker
+```zsh
+sudo su
+pacman -S docker docker-compose
+systemctl enable docker
+systemctl restart docker
+usermod -aG docker alejo
 ```
