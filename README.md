@@ -168,7 +168,7 @@ reboot
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev
+pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev nmap
 ```
 
 Edit file `/etc/pacman.conf` with editor text (vim, nano, ...) and modify the following lines
@@ -371,9 +371,25 @@ super + Return
 
 ...
 
+# focus the last node/desktop
+-super + {grave,Tab}
+-	bspc {node,desktop} -f last
++#super + {grave,Tab}
++#	bspc {node,desktop} -f last
++
++# focus on the next or previous desktop
++super + {shift + ,_} Tab
++	bspc desktop -f {prev,next}.local.occupied
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-        bspc {desktop -f,node -d} '^{1-9,10}'
+	bspc {desktop -f,node -d} '^{1-9,10}'
 
 +# Custom numpad focus or send to the given desktop
 +super + {_,shift + }KP_{1-9,End,Down,Next,Left,Begin,Right,Home,Up,Prior,0,Insert}
@@ -628,6 +644,8 @@ cd build
 cmake ..
 make -j$(nproc)
 sudo make install
+cd ../..
+rm -r polybar
 ```
 
 ### Install Picom
@@ -642,6 +660,8 @@ git submodule update --init --recursive
 meson --buildtype=release . build
 ninja -C build
 sudo ninja -C build install
+cd ..
+rm -r picom
 ```
 
 ### Install Powerlevel10k
