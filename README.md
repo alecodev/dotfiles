@@ -854,3 +854,13 @@ systemctl enable docker
 systemctl restart docker
 usermod -aG docker alejo
 ```
+
+Edit file `~/.aliases` with editor text (vim, nano, ...) and add the following lines
+```bash
+# Docker
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+alias dim="docker images"
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+```
