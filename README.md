@@ -232,6 +232,14 @@ Change user
 su alejo
 ```
 
+Git aliases are created
+```bash
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+```
+
 Create or edit the file `~/.xprofile` with editor text (vim, nano, ...) and set the following lines
 ```text
 VBoxClient-all &
@@ -852,7 +860,9 @@ sudo su
 pacman -S docker docker-compose
 systemctl enable docker
 systemctl restart docker
-usermod -aG docker alejo
+groupadd -r -g 82 www-data
+useradd -M -r -u 82 -g 82 -c "User HTTP files" -s /usr/bin/nologin www-data
+usermod -aG docker,www-data alejo
 ```
 
 Edit file `~/.aliases` with editor text (vim, nano, ...) and add the following lines
@@ -861,6 +871,8 @@ Edit file `~/.aliases` with editor text (vim, nano, ...) and add the following l
 alias dps="docker ps"
 alias dpsa="docker ps -a"
 alias dim="docker images"
+alias dc="docker-compose"
 alias dcu="docker-compose up -d"
 alias dcd="docker-compose down"
+alias dcl="docker-compose logs"
 ```
