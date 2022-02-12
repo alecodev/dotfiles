@@ -242,6 +242,7 @@ git config --global alias.st status
 
 Create or edit the file `~/.xprofile` with editor text (vim, nano, ...) and set the following lines
 ```text
+dbus-update-activation-environment --systemd DISPLAY &
 VBoxClient-all &
 sxhkd &
 exec bspwm
