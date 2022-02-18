@@ -243,7 +243,7 @@ reboot
 
 Ready now you can log in with the other user and use bspwm by pressing `Super + Enter`
 
-Git aliases are created
+Git alias are created
 ```bash
 git config --global alias.co checkout
 git config --global alias.br branch
@@ -257,31 +257,6 @@ sudo su
 touch ~/{.zshrc,.zsh_history}
 su alejo
 touch ~/{.aliases,.zshrc,.zsh_history}
-```
-
-Create or edit the file `~/.aliases` with your preferred [text editor](#text-editors) and add the following lines
-```bash
-# ls
-alias ls='lsd --group-dirs=first'
-alias ll='lsd -lh --group-dirs=first'
-alias la='lsd -Alh --group-dirs=first'
-alias l='lsd --group-dirs=first'
-
-# cat
-alias cat='/bin/bat'
-alias catn='/bin/cat'
-alias catnl='/bin/bat --paging=never'
-
-# diff
-alias diff='/usr/bin/diff --color=auto'
-
-# cd
-alias cd..='cd ..'
-
-# Colorize the grep command output for ease of use (good for log files)
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
 ```
 
 Create or edit the file `~/.bashrc` with your preferred [text editor](#text-editors) and add the following lines
@@ -714,20 +689,40 @@ usermod --shell /usr/bin/zsh root
 su alejo
 ```
 
-### Install bat
-```zsh
-sudo pacman -S bat
-```
-
 Edit file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 # Alias
 source ~/.aliases
 ```
 
-### Install lsd
+### Install bat and lsd
 ```zsh
-sudo pacman -S lsd
+sudo pacman -S bat lsd
+```
+
+Create or edit the file `~/.aliases` with your preferred [text editor](#text-editors) and add the following lines
+```bash
+# ls
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lh --group-dirs=first'
+alias la='lsd -Alh --group-dirs=first'
+alias l='lsd --group-dirs=first'
+
+# cat
+alias cat='/bin/bat'
+alias catn='/bin/cat'
+alias catnl='/bin/bat --paging=never'
+
+# diff
+alias diff='/usr/bin/diff --color=auto'
+
+# cd
+alias cd..='cd ..'
+
+# Colorize the grep command output for ease of use (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
 ```
 
 ### Install fzf
