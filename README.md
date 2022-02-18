@@ -4,6 +4,13 @@
 - [🇪🇸 - Español](./README.es.md)
 - **🇺🇸 - English**
 
+
+#### ***Text Editors***
+- neovim
+- vim
+- nano
+
+
 ## Arch Linux installation
 For more information on the installation process visit [Arch's guide](https://wiki.archlinux.org/title/Installation_guide)
 
@@ -81,7 +88,7 @@ lsblk
 
 Install the basic packages
 ```bash
-pacstrap /mnt base base-devel linux linux-firmware nano vim dhcpcd
+pacstrap /mnt base base-devel linux linux-firmware neovim dhcpcd
 ```
 
 Generate the Fstab file
@@ -100,7 +107,7 @@ ln -sf /usr/share/zoneinfo/America/Bogota /etc/localtime
 hwclock --systohc
 ```
 
-Set Localization, edit the file `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8` with editor text (vim, nano, ...)
+Set Localization, edit the file `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8` with your preferred [text editor](#text-editors)
 
 Generate the regional settings and set the default keyboard layout by running
 ```bash
@@ -114,7 +121,7 @@ Create the hostname file (in my case the hostname will be 'Arch')
 echo "Arch" >> /etc/hostname
 ```
 
-Add the domains to the file `/etc/hosts` with the editor text (vim, nano, ...), replace the name of the computer with the one you established in the previous step
+Add the domains to the file `/etc/hosts` with your preferred [text editor](#text-editors), replace the name of the computer with the one you established in the previous step
 ```bash
 127.0.0.1   localhost
 ::1         localhost
@@ -138,13 +145,18 @@ passwd alejo
 usermod -aG wheel,audio,video,optical,storage alejo
 ```
 
-Activate the sudo group by executing the following command `EDITOR=vim visudo` and uncomment `%whell ALL=(ALL) ALL`
+Activate the sudo group by executing the following command and uncomment `%wheel ALL=(ALL) ALL`
+```bash
+EDITOR=nvim
+visudo
+```
+
 
 >In case of running in a virtual machine like VirtualBox run the following command
 >```bash
->usermod -aG vboxsf alejo
 >pacman -S virtualbox-guest-utils
 >systemctl enable vboxservice
+>usermod -aG vboxsf alejo
 >```
 
 Set the bootloader
@@ -171,7 +183,7 @@ pacman -Syu
 pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev nmap
 ```
 
-Edit file `/etc/pacman.conf` with editor text (vim, nano, ...) and modify the following lines
+Edit file `/etc/pacman.conf` with your preferred [text editor](#text-editors) and modify the following lines
 ```diff
 # Misc options
 #UseSyslog
@@ -185,41 +197,21 @@ CheckSpace
 
 Configure alias, zsh and history
 ```bash
-touch ~/{.aliases,.zshrc,.zsh_history}
-sudo su
+touch ~/{.zshrc,.zsh_history}
+su alejo
 touch ~/{.aliases,.zshrc,.zsh_history}
 ```
 
-Create or edit the file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
-```zsh
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -e
-
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/alejo/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-bindkey "^[[3~" delete-char                     # Key Del
-bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
-bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
-bindkey "^[[H" beginning-of-line                # Key Home
-bindkey "^[[F" end-of-line                      # Key End
-bindkey "^[[1;3C" forward-word                  # Key Alt + Right
-bindkey "^[[1;3D" backward-word                 # Key Alt + Left
-```
-
-Edit the file `/etc/lightdm/lightdm.conf` with the editor text (vim, nano, ...) and set the following lines
-```text
-greeter-session=lightdm-gtk-greeter
-greeter-setup-script=/usr/bin/numlockx on
-display-setup-script=/usr/bin/setxkbmap es
+Edit the file `/etc/lightdm/lightdm.conf` with your preferred [text editor](#text-editors) and modify the following lines
+```diff
+-greeter-session=example-gtk-gnome
++greeter-session=lightdm-gtk-greeter
+...
+-display-setup-script=
++display-setup-script=/usr/bin/setxkbmap es
+...
+-greeter-setup-script=
++greeter-setup-script=/usr/bin/numlockx on
 ```
 
 Activate the lightdm service
@@ -232,6 +224,32 @@ Change user
 su alejo
 ```
 
+Create or edit the file `~/.xprofile` with your preferred [text editor](#text-editors) and set the following lines
+```text
+dbus-update-activation-environment --systemd DISPLAY &
+VBoxClient-all &
+sxhkd &
+exec bspwm
+```
+
+Create the directories and configuration files of bspwm and sxhkd
+```bash
+mkdir -p ~/.config/{bspwm,sxhkd}
+cd /usr/share/doc/bspwm/examples
+cp bspwmrc ~/.config/bspwm
+cp sxhkdrc ~/.config/sxhkd
+cd ~
+chmod +x ~/.config/bspwm/bspwmrc
+sed -i 's/urxvt/alacritty/' ~/.config/sxhkd/sxhkdrc
+```
+
+Reboot and log in with the other user
+```bash
+reboot
+```
+
+Ready now you can log in with the other user and use bspwm by pressing `Super + Enter`
+
 Git aliases are created
 ```bash
 git config --global alias.co checkout
@@ -240,15 +258,7 @@ git config --global alias.ci commit
 git config --global alias.st status
 ```
 
-Create or edit the file `~/.xprofile` with editor text (vim, nano, ...) and set the following lines
-```text
-dbus-update-activation-environment --systemd DISPLAY &
-VBoxClient-all &
-sxhkd &
-exec bspwm
-```
-
-Create or edit the file `~/.aliases` with editor text (vim, nano, ...) and add the following lines
+Create or edit the file `~/.aliases` with your preferred [text editor](#text-editors) and add the following lines
 ```bash
 # ls
 alias ls='lsd --group-dirs=first'
@@ -273,26 +283,46 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 ```
 
-Create or edit the file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
+Create or edit the file `~/.bashrc` with your preferred [text editor](#text-editors) and add the following lines
 ```bash
 # Alias
 source ~/.aliases
 ```
 
-Create the directories and configuration files of bspwm, sxhkd, polybar and alacritty
+Create or edit the file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
+```zsh
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/alejo/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+bindkey "^[[3~" delete-char                     # Key Del
+bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
+bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
+bindkey "^[[H" beginning-of-line                # Key Home
+bindkey "^[[F" end-of-line                      # Key End
+bindkey "^[[1;3C" forward-word                  # Key Alt + Right
+bindkey "^[[1;3D" backward-word                 # Key Alt + Left
+```
+
+Create the directories and configuration files of bspwm, polybar and alacritty
 ```bash
-mkdir -p ~/.config/{bspwm,sxhkd,polybar,alacritty}
-cd /usr/share/doc/bspwm/examples
-cp bspwmrc ~/.config/bspwm
-cp sxhkdrc ~/.config/sxhkd
-cd ~
-chmod +x ~/.config/bspwm/bspwmrc
+mkdir -p ~/.config/{polybar,alacritty}
 mkdir ~/.config/bspwm/scripts
 touch ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
 chmod +x ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
 ```
 
-Edit file `~/.config/bspwm/scripts/bspwm_resize` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/bspwm/scripts/bspwm_resize` with your preferred [text editor](#text-editors) and add the following lines
 ```bash
 #!/usr/bin/env bash
 
@@ -312,7 +342,7 @@ esac
 bspc node -z "$dir" "$x" "$y" || bspc node -z "$falldir" "$x" "$y"
 ```
 
-Edit file `~/.config/bspwm/scripts/bspwm_smart_move` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/bspwm/scripts/bspwm_smart_move` with your preferred [text editor](#text-editors) and add the following lines
 ```bash
 #!/bin/bash
 
@@ -359,7 +389,7 @@ else
 fi
 ```
 
-Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and modify the following lines
+Edit file `~/.config/sxhkd/sxhkdrc` with your preferred [text editor](#text-editors) and modify the following lines
 ```diff
 # terminal emulator
 super + Return
@@ -458,13 +488,6 @@ rm ~/.bashrc
 ln -s /home/alejo/.bashrc ~/
 ```
 
-Reboot and log in with the other user
-```bash
-reboot
-```
-
-Ready now you can log in with the other user and use bspwm by pressing `Super + Enter`
-
 ---
 ## Setting up the work environment
 
@@ -489,7 +512,7 @@ rm firefox-*
 mkdir -p ~/Downloads/Firefox
 ```
 
-Edit file `/usr/bin/firefox` with editor text (vim, nano, ...) and add the following lines
+Edit file `/usr/bin/firefox` with your preferred [text editor](#text-editors) and add the following lines
 ```text
 #!/bin/bash
 exec firejail /opt/firefox/firefox
@@ -497,7 +520,7 @@ exec firejail /opt/firefox/firefox
 
 Change the download directory in Firefox settings to `~/Downloads/Firefox`
 
-Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/sxhkd/sxhkdrc` with your preferred [text editor](#text-editors) and add the following lines
 ```text
 # Open Firefox
 super + shift + f
@@ -544,7 +567,7 @@ su alejo
 cp /usr/share/doc/alacritty/example/alacritty.yml ~/.config/alacritty/
 ```
 
-Edit file `~/.config/alacritty/alacritty.yml` with editor text (vim, nano, ...) and modify the following lines
+Edit file `~/.config/alacritty/alacritty.yml` with your preferred [text editor](#text-editors) and modify the following lines
 ```diff
 # Font configuration
 -#font:
@@ -696,7 +719,7 @@ su alejo
 sudo pacman -S bat
 ```
 
-Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 # Alias
 source ~/.aliases
@@ -726,7 +749,7 @@ su alejo
 wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
 ```
 
-Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 source /usr/share/zsh-plugins/sudo.plugin.zsh
 ```
@@ -742,7 +765,7 @@ chmod 600 .ssh/config
 echo "# host-specific options\n" >> ~/.ssh/config
 ```
 
-Edit file `~/.config/systemd/user/ssh-agent.service` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/systemd/user/ssh-agent.service` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 [Unit]
 Description=SSH key agent
@@ -758,7 +781,7 @@ ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
 WantedBy=default.target
 ```
 
-Edit file `~/.bashrc` and `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.bashrc` and `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 # Service ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
@@ -784,7 +807,7 @@ rm -r google-chrome
 sudo su
 ```
 
-Edit file `/usr/bin/google-chrome-stable` with editor text (vim, nano, ...) and add the following lines
+Edit file `/usr/bin/google-chrome-stable` with your preferred [text editor](#text-editors) and add the following lines
 ```diff
 # Launch
 -exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@"
@@ -793,7 +816,7 @@ Edit file `/usr/bin/google-chrome-stable` with editor text (vim, nano, ...) and 
 
 Change the download directory in Chrome settings to `~/Downloads/Chrome`
 
-Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/sxhkd/sxhkdrc` with your preferred [text editor](#text-editors) and add the following lines
 ```text
 # Open Chrome
 super + shift + g
@@ -823,7 +846,7 @@ gpg --list-secret-keys --keyid-format=long
 git config --global user.signingkey YOURKEY
 ```
 
-Edit file `~/.bashrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.bashrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 #  GPG key
 export GPG_TTY=$(tty)
@@ -833,7 +856,7 @@ export EDITOR="/usr/bin/nvim"
 export VISUAL="$EDITOR"
 ```
 
-Edit file `~/.zshrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
 ```zsh
 #  GPG key
 export GPG_TTY=$TTY
@@ -848,7 +871,7 @@ export VISUAL="$EDITOR"
 sudo pacman -S flameshot
 ```
 
-Edit file `~/.config/sxhkd/sxhkdrc` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.config/sxhkd/sxhkdrc` with your preferred [text editor](#text-editors) and add the following lines
 ```text
 # Open Flameshot
 super + shift + s
@@ -866,7 +889,7 @@ useradd -M -r -u 82 -g 82 -c "User HTTP files" -s /usr/bin/nologin www-data
 usermod -aG docker,www-data alejo
 ```
 
-Edit file `~/.aliases` with editor text (vim, nano, ...) and add the following lines
+Edit file `~/.aliases` with your preferred [text editor](#text-editors) and add the following lines
 ```bash
 # Docker
 alias dps="docker ps"
