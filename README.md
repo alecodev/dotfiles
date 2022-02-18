@@ -195,13 +195,6 @@ CheckSpace
 +ILoveCandy
 ```
 
-Configure alias, zsh and history
-```bash
-touch ~/{.zshrc,.zsh_history}
-su alejo
-touch ~/{.aliases,.zshrc,.zsh_history}
-```
-
 Edit the file `/etc/lightdm/lightdm.conf` with your preferred [text editor](#text-editors) and modify the following lines
 ```diff
 -greeter-session=example-gtk-gnome
@@ -256,6 +249,14 @@ git config --global alias.co checkout
 git config --global alias.br branch
 git config --global alias.ci commit
 git config --global alias.st status
+```
+
+Configure alias, zsh and history
+```bash
+sudo su
+touch ~/{.zshrc,.zsh_history}
+su alejo
+touch ~/{.aliases,.zshrc,.zsh_history}
 ```
 
 Create or edit the file `~/.aliases` with your preferred [text editor](#text-editors) and add the following lines
@@ -393,8 +394,7 @@ Edit file `~/.config/sxhkd/sxhkdrc` with your preferred [text editor](#text-edit
 ```diff
 # terminal emulator
 super + Return
--	urxvt
-+	alacritty
+	alacritty
 
 # program launcher
 -super + @space
