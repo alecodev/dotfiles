@@ -37,7 +37,7 @@ Set the partitions
 cfdisk /dev/sda
 ```
 
-Select GPT and create the following partitions (the size depends on the use you want to give it), remember to **write** before exiting
+Select GPT and create the following partitions (the size depends on the use you want to give it), **remember to write before exiting**
 ```
 512M      EFI System         (This will be the size of the system boot partition)
 16G       Linux Swap         (This will be the size of the SWAP memory, it is recommended to double the size of the RAM memory)
@@ -94,7 +94,7 @@ hwclock --systohc
 ```
 
 ### Set Localization
-Edit the file `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8` with [text editor][1]
+Edit the file `/etc/locale.gen` with [text editor][1] and uncomment `en_US.UTF-8 UTF-8`
 
 Generate the regional settings and set the default keyboard layout by running
 ```bash
