@@ -50,13 +50,12 @@ Set the partitions
 cfdisk /dev/sda
 ```
 
-Select GPT and create the following partitions (the size depends on the use you want to give it), remember to write before exiting
+Select GPT and create the following partitions (the size depends on the use you want to give it), remember to **write** before exiting
 ```
 512M      EFI System         (This will be the size of the system boot partition)
 16G       Linux Swap         (This will be the size of the SWAP memory, it is recommended to double the size of the RAM memory)
 40G       Linux filesystem   (This will be the size assigned to /)
 63.5G     Linux filesystem   (This will be the size assigned to /home)
-write
 ```
 
 Check the partitions
@@ -251,48 +250,9 @@ git config --global alias.ci commit
 git config --global alias.st status
 ```
 
-Configure alias, zsh and history
+Create the directories and configuration files of bspwm and alacritty
 ```bash
-sudo su
-touch ~/{.zshrc,.zsh_history}
-su alejo
-touch ~/{.aliases,.zshrc,.zsh_history}
-```
-
-Create or edit the file `~/.bashrc` with your preferred [text editor](#text-editors) and add the following lines
-```bash
-# Alias
-source ~/.aliases
-```
-
-Create or edit the file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
-```zsh
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -e
-
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/alejo/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-
-bindkey "^[[3~" delete-char                     # Key Del
-bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
-bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
-bindkey "^[[H" beginning-of-line                # Key Home
-bindkey "^[[F" end-of-line                      # Key End
-bindkey "^[[1;3C" forward-word                  # Key Alt + Right
-bindkey "^[[1;3D" backward-word                 # Key Alt + Left
-```
-
-Create the directories and configuration files of bspwm, polybar and alacritty
-```bash
-mkdir -p ~/.config/{polybar,alacritty}
+mkdir -p ~/.config/alacritty
 mkdir ~/.config/bspwm/scripts
 touch ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
 chmod +x ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
@@ -454,9 +414,10 @@ super + {_,shift + }{1-9,0}
 
 Create the bspwm configuration directories in the other user and copy the files (in my case 'alejo')
 ```bash
+touch ~/.aliases
 sudo su
 ln -sf /home/alejo/.aliases ~/
-ln -s /home/alejo/.config/{bspwm,sxhkd,polybar,alacritty} ~/.config/
+ln -s /home/alejo/.config/{bspwm,sxhkd,alacritty} ~/.config/
 rm ~/.xprofile
 ln -s /home/alejo/.xprofile ~/
 rm ~/.bashrc
@@ -640,6 +601,10 @@ sudo pacman -S neofetch
 
 ### Install Polybar
 ```bash
+mkdir -p ~/.config/polybar
+sudo su
+ln -s /home/alejo/.config/polybar ~/.config/
+su alejo
 sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl pulseaudio
 cd ~/Downloads/Firefox/
 
@@ -671,6 +636,39 @@ cd ..
 rm -r picom
 ```
 
+Configure zsh and history
+```bash
+sudo su
+touch ~/{.zshrc,.zsh_history}
+su alejo
+touch ~/{.zshrc,.zsh_history}
+```
+
+Create or edit the file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
+```zsh
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/alejo/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+bindkey "^[[3~" delete-char                     # Key Del
+bindkey "^[[5~" beginning-of-buffer-or-history  # Key Page Up
+bindkey "^[[6~" end-of-buffer-or-history        # Key Page Down
+bindkey "^[[H" beginning-of-line                # Key Home
+bindkey "^[[F" end-of-line                      # Key End
+bindkey "^[[1;3C" forward-word                  # Key Alt + Right
+bindkey "^[[1;3D" backward-word                 # Key Alt + Left
+```
+
 ### Install Powerlevel10k
 ```bash
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
@@ -689,8 +687,8 @@ usermod --shell /usr/bin/zsh root
 su alejo
 ```
 
-Edit file `~/.zshrc` with your preferred [text editor](#text-editors) and add the following lines
-```zsh
+Edit file `~/.zshrc` and `~/.bashrc` with your preferred [text editor](#text-editors) and add the following lines
+```bash
 # Alias
 source ~/.aliases
 ```
