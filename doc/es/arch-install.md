@@ -138,6 +138,18 @@ EDITOR=nvim
 visudo
 ```
 
+Edite el archivo `/etc/pacman.conf` con [editor de texto][1] y modifique las siguientes líneas
+```diff
+# Misc options
+#UseSyslog
+-#Color
++Color
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
++ILoveCandy
+```
+
 >**En caso de ejecutarse en una máquina virtual como VirtualBox ejecute el siguiente comando**
 >```bash
 >pacman -S virtualbox-guest-utils

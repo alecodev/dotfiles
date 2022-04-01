@@ -1,7 +1,7 @@
 # Dotfiles
 
 
-***Languages***
+***Idiomas***
 - **🇪🇸 - Español**
 - [🇺🇸 - English](./README.md)
 ---

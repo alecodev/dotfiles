@@ -22,19 +22,7 @@
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh neovim htop xorg-xev nmap
-```
-
-Edit file `/etc/pacman.conf` with [text editor][1] and modify the following lines
-```diff
-# Misc options
-#UseSyslog
--#Color
-+Color
-#NoProgressBar
-CheckSpace
-#VerbosePkgLists
-+ILoveCandy
+pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh htop xorg-xev nmap
 ```
 
 Edit the file `/etc/lightdm/lightdm.conf` with [text editor][1] and modify the following lines
@@ -260,11 +248,10 @@ Create the bspwm configuration directories in the other user and copy the files 
 touch ~/.aliases
 sudo su
 ln -sf /home/alejo/.aliases ~/
+mkdir ~/.config
 ln -s /home/alejo/.config/{bspwm,sxhkd,alacritty} ~/.config/
-rm ~/.xprofile
-ln -s /home/alejo/.xprofile ~/
-rm ~/.bashrc
-ln -s /home/alejo/.bashrc ~/
+rm ~/{.xprofile,.bashrc}
+ln -s /home/alejo/{.xprofile,.bashrc} ~/
 ```
 
 ---
