@@ -22,7 +22,7 @@
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git libsecret xorg-server bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter numlockx zsh htop xorg-xev nmap
+pacman -S gcc make git numlockx nmap wget curl p7zip xclip unzip zsh htop libsecret xorg-server xorg-xev bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter
 ```
 
 Edit the file `/etc/lightdm/lightdm.conf` with [text editor][1] and modify the following lines
@@ -85,75 +85,10 @@ Create the directories and configuration files of bspwm and alacritty
 ```bash
 mkdir -p ~/.config/alacritty
 mkdir ~/.config/bspwm/scripts
-touch ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
-chmod +x ~/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
-```
-
-Edit file `~/.config/bspwm/scripts/bspwm_resize` with [text editor][1] and add the following lines
-```bash
-#!/usr/bin/env bash
-
-if bspc query -N -n focused.floating > /dev/null; then
-	step=20
-else
-	step=100
-fi
-
-case "$1" in
-	west) dir=right; falldir=left; x="-$step"; y=0;;
-	east) dir=right; falldir=left; x="$step"; y=0;;
-	north) dir=top; falldir=bottom; x=0; y="-$step";;
-	south) dir=top; falldir=bottom; x=0; y="$step";;
-esac
-
-bspc node -z "$dir" "$x" "$y" || bspc node -z "$falldir" "$x" "$y"
-```
-
-Edit file `~/.config/bspwm/scripts/bspwm_smart_move` with [text editor][1] and add the following lines
-```bash
-#!/bin/bash
-
-# based on https://gitlab.com/protesilaos/dotfiles/-/blob/v2.2.0/bin/bin/bspwm_smart_move
-
-[ "$#" -eq 1 ] || { echo "Pass only one argument: north,east,south,west"; exit 1; }
-
-# Check if argument is a valid direction.
-case "$1" in
-    north|east|south|west)
-        dir="$1"
-        ;;
-    *)
-        echo "Not a valid argument."
-        echo "Use one of: north,east,south,west"
-        exit 1
-        ;;
-esac
-
-_query_nodes() {
-    bspc query -N -n "$@"
-}
-
-# Do not operate on floating windows!
-#[ -z "$(_query_nodes focused.floating)" ] || { echo "Only move tiled windows."; exit 1; }
-
-receptacle="$(_query_nodes 'any.leaf.!window')"
-
-# This regulates the behaviour documented in the description.
-if [ -n "$(_query_nodes focused.floating)" ]; then
-    case "$1" in
-        west) x=-20; y=0;;
-        south) x=0; y=20;;
-        north) x=0; y=-20;;
-        east) x=20; y=0;;
-    esac
-    bspc node -v "$x" "$y"
-elif [ -n "$(_query_nodes "${dir}.!floating")" ]; then
-    bspc node -s "$dir"
-elif [ -n "$receptacle" ]; then
-    bspc node focused -n "$receptacle" --follow
-else
-    bspc node @/ -p "$dir" -i && bspc node -n "$receptacle" --follow
-fi
+cd !$
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_resize
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_smart_move
+chmod +x ./{bspwm_resize,bspwm_smart_move}
 ```
 
 Edit file `~/.config/sxhkd/sxhkdrc` with [text editor][1] and modify the following lines
