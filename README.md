@@ -22,7 +22,7 @@
 Login with the root user and run the following commands
 ```bash
 pacman -Syu
-pacman -S gcc make git numlockx nmap wget curl p7zip xclip unzip zsh htop libsecret xorg-server xorg-xev bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter
+pacman -S gcc make git numlockx nmap wget curl p7zip xclip unzip zsh htop flameshot libsecret gnome-keyring xorg-server xorg-xev bspwm sxhkd alacritty rofi lightdm lightdm-gtk-greeter
 ```
 
 Edit the file `/etc/lightdm/lightdm.conf` with [text editor][1] and modify the following lines
@@ -111,99 +111,17 @@ ln -s /home/alejo/{.xprofile,.bashrc} ~/
 ---
 ## Setting up the work environment
 
-### Install Firejail
-```bash
-sudo pacman -S firejail
-```
+### Programs & Applications
 
-### Install Firefox
-```bash
-sudo su
-pacman -Syu
-pacman -S dbus-glib ffmpeg4.4 libxt
-cd /
-chown alejo:alejo opt/
-cd !$
-touch /usr/bin/firefox
-chmod 755 /usr/bin/firefox
-su alejo
-```
-
-Get the download URL of the Firefox tar.* file `curl "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"` and change it in the following command
-```bash
-wget "https://download-installer.cdn.mozilla.net/pub/firefox/releases/95.0.2/linux-x86_64/en-US/firefox-95.0.2.tar.bz2"
-tar -xf firefox-*
-rm firefox-*
-```
-
-Edit file `/usr/bin/firefox` with [text editor][1] and add the following lines
-```text
-#!/bin/bash
-exec firejail /opt/firefox/firefox
-```
-
-Create and change the download directory in Firefox settings to `~/Downloads/Firefox`
-```bash
-mkdir -p ~/Downloads/Firefox
-```
-
-### Install Fonts
-```bash
-sudo su
-```
-
-- #### ***Hack Nerd Font***
-	---
-	Download the font ***Hack Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
-	```bash
-	mkdir -p /usr/local/share/fonts/nerd-fonts/Hack
-	cd !$
-	mv /home/alejo/Downloads/Firefox/Hack.zip .
-	unzip Hack.zip
-	rm Hack.zip
-	```
-
-- #### ***Meslo Nerd Font***
-	---
-	Download the font ***Meslo Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
-	```bash
-	mkdir -p /usr/local/share/fonts/nerd-fonts/Meslo
-	cd !$
-	mv /home/alejo/Downloads/Firefox/Meslo.zip .
-	unzip Meslo.zip
-	rm Meslo.zip
-	```
-
-Reload fonts
-```bash
-fc-cache -vf
-```
+- [Firefox](doc/en/firefox-install.md)
+- [Fonts](doc/en/fonts-install.md)
+- [Yay](doc/en/yay-install.md)
+- [Visual Studio Code](doc/en/vscode-install.md)
+- [Google Chrome](doc/en/chrome-install.md)
 
 Download file `~/.config/alacritty/alacritty.yml` with the following command
 ```bash
 wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
-```
-
-### Install Yay
-```bash
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
-cd ..
-rm -r yay
-yay -Yc
-```
-
-### Install Visual Studio Code
-Download file tar.gz from the page `https://code.visualstudio.com/Download` and install with the following commands
-```bash
-sudo pacman -S electron
-cd /opt
-mv ~/Downloads/Firefox/code-*.tar.gz .
-tar -xf code-*.tar.gz
-rm code-*.tar.gz
-cd ~
-ln -s /opt/VSCode-linux-x64/bin/code /usr/bin/
 ```
 
 ### Set Wallpaper
@@ -243,6 +161,11 @@ cd ../..
 rm -r polybar
 ```
 
+>Or install with yay
+>```bash
+>yay -S polybar
+>```
+
 Edit the file `~/.config/bspwm/bspwmrc` with [text editor][1] and add the following line
 ```bash
 polybar &
@@ -263,6 +186,11 @@ sudo ninja -C build install
 cd ..
 rm -r picom
 ```
+
+>Or install with the following command
+>```bash
+>sudo pacman -S picom
+>```
 
 Configure zsh and history
 ```bash
@@ -326,7 +254,7 @@ source ~/.aliases
 sudo pacman -S bat lsd
 ```
 
-# Install Docker
+### Install Docker
 ```zsh
 sudo su
 pacman -S docker docker-compose
@@ -371,8 +299,10 @@ source /usr/share/zsh-plugins/sudo.plugin.zsh
 sudo pacman -S openssh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 mkdir -p ~/.config/systemd/user
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
 touch ~/.ssh/config
-chmod 600 .ssh/config
+chmod 600 ~/.ssh/config
 echo "# host-specific options\n" >> ~/.ssh/config
 ```
 
@@ -394,31 +324,9 @@ systemctl --user start ssh-agent
 ssh-add ~/.ssh/id_rsa
 ```
 
-### Install Google Chrome
+### Install Mysql Workbench
 ```zsh
-sudo pacman -S noto-fonts-emoji
-mkdir -p ~/Downloads/Chrome
-cd !$
-git clone https://aur.archlinux.org/google-chrome.git
-cd google-chrome
-makepkg -si
-cd ..
-rm -r google-chrome
-sudo su
-```
-
-Edit file `/usr/bin/google-chrome-stable` with [text editor][1] and add the following lines
-```diff
-# Launch
--exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@"
-+exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@" --force-dark-mode
-```
-
-Change the download directory in Chrome settings to `~/Downloads/Chrome`
-
-# Install Mysql Workbench
-```zsh
-sudo pacman -S mysql-workbench gnome-keyring
+sudo pacman -S mysql-workbench
 dbus-update-activation-environment --systemd DISPLAY
 sudo su
 cd /usr/share/mysql-workbench/data
@@ -426,7 +334,7 @@ mv code_editor.xml code_editor.xml_original
 wget https://raw.githubusercontent.com/mleandrojr/mysql-workbench-dark-theme/master/code_editor.xml
 ```
 
-# Generating a GPG key
+### Generating a GPG key
 ```zsh
 gpg --full-generate-key
 git config --global commit.gpgsign true
@@ -457,11 +365,6 @@ export GPG_TTY=$TTY
 # Editor Default
 export EDITOR="/usr/bin/nvim"
 export VISUAL="$EDITOR"
-```
-
-# Install Flameshot
-```zsh
-sudo pacman -S flameshot
 ```
 
 [1]:#text-editor
