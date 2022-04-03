@@ -370,27 +370,15 @@ source /usr/share/zsh-plugins/sudo.plugin.zsh
 ```zsh
 sudo pacman -S openssh
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-mkdir -p ~/.config/systemd/user/
-touch ~/.config/systemd/user/ssh-agent.service
+mkdir -p ~/.config/systemd/user
 touch ~/.ssh/config
 chmod 600 .ssh/config
 echo "# host-specific options\n" >> ~/.ssh/config
 ```
 
-Edit file `~/.config/systemd/user/ssh-agent.service` with [text editor][1] and add the following lines
-```zsh
-[Unit]
-Description=SSH key agent
-
-[Service]
-Type=simple
-Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
-# DISPLAY required for ssh-askpass to work
-Environment=DISPLAY=:0
-ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
-
-[Install]
-WantedBy=default.target
+Download file `~/.config/systemd/user/ssh-agent.service` with the following command
+```bash
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
 ```
 
 Edit file `~/.bashrc` and `~/.zshrc` with [text editor][1] and add the following lines
