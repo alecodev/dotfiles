@@ -1,0 +1,30 @@
+# ls
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lh --group-dirs=first'
+alias la='lsd -Alh --group-dirs=first'
+alias l='lsd --group-dirs=first'
+
+# cat
+alias cat='/bin/bat'
+alias catn='/bin/cat'
+alias catnl='/bin/bat --paging=never'
+
+# diff
+alias diff='/usr/bin/diff --color=auto'
+
+# cd
+alias cd..='cd ..'
+
+# Colorize the grep command output for ease of use (good for log files)
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Docker
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+alias dim="docker images"
+alias dc="docker-compose"
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcl="docker-compose logs"

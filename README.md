@@ -91,92 +91,11 @@ wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scri
 chmod +x ./{bspwm_resize,bspwm_smart_move}
 ```
 
-Edit file `~/.config/sxhkd/sxhkdrc` with [text editor][1] and modify the following lines
-```diff
-# terminal emulator
-super + Return
-	alacritty
-
-# program launcher
--super + @space
--	dmenu_run
-+super + r
-+	rofi -show run
-
-...
-
-# focus the node in the given direction
--super + {_,shift + }{h,j,k,l}
-+super + {_,shift + }{Left,Down,Up,Right}
-
-...
-
-# focus the last node/desktop
--super + {grave,Tab}
--	bspc {node,desktop} -f last
-+#super + {grave,Tab}
-+#	bspc {node,desktop} -f last
-+
-+# focus on the next or previous desktop
-+super + {shift + ,_} Tab
-+	bspc desktop -f {prev,next}.local.occupied
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
-
-# focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
-
-+# Custom numpad focus or send to the given desktop
-+super + {_,shift + }KP_{1-9,End,Down,Next,Left,Begin,Right,Home,Up,Prior,0,Insert}
-+        bspc {desktop -f,node -d} '^{1-9,1,2,3,4,5,6,7,8,9,10,10}'
-
-#
-# preselect
-#
-
-# preselect the direction
--super + ctrl + {h,j,k,l}
-+super + ctrl + alt + {Left,Down,Up,Right}
-
-...
-
-# cancel the preselection for the focused desktop
--super + ctrl + shift + space
-+super + ctrl + alt + space
-
-...
-
-# expand a window by moving one of its side outward
--super + alt + {h,j,k,l}
--	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
-+#super + alt + {h,j,k,l}
-+#	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
-
-# contract a window by moving one of its side inward
--super + alt + shift + {h,j,k,l}
--	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
-+#super + alt + shift + {h,j,k,l}
-+#	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
-
-# move a floating window
--super + {Left,Down,Up,Right}
--       bspc node -v {-20 0,0 20,0 -20,20 0}
-+#super + {Left,Down,Up,Right}
-+#       bspc node -v {-20 0,0 20,0 -20,20 0}
-
-+# Custom move window
-+super + ctrl + {Left,Down,Up,Right}
-+        /home/alejo/.config/bspwm/scripts/bspwm_smart_move {west,south,north,east}
-
-+# Custom resize window
-+alt + super + {Left,Down,Up,Right}
-+	/home/alejo/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
+Download file `~/.config/sxhkd/sxhkdrc` with the following command
+```bash
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
 ```
+Press `Super + Alt + r` and  `Super + esc`
 
 Create the bspwm configuration directories in the other user and copy the files (in my case 'alejo')
 ```bash
@@ -192,11 +111,16 @@ ln -s /home/alejo/{.xprofile,.bashrc} ~/
 ---
 ## Setting up the work environment
 
+### Install Firejail
+```bash
+sudo pacman -S firejail
+```
+
 ### Install Firefox
 ```bash
 sudo su
 pacman -Syu
-pacman -S wget curl libstdc++5 dbus-glib unzip p7zip firejail
+pacman -S dbus-glib ffmpeg4.4 libxt
 cd /
 chown alejo:alejo opt/
 cd !$
@@ -210,7 +134,6 @@ Get the download URL of the Firefox tar.* file `curl "https://download.mozilla.o
 wget "https://download-installer.cdn.mozilla.net/pub/firefox/releases/95.0.2/linux-x86_64/en-US/firefox-95.0.2.tar.bz2"
 tar -xf firefox-*
 rm firefox-*
-mkdir -p ~/Downloads/Firefox
 ```
 
 Edit file `/usr/bin/firefox` with [text editor][1] and add the following lines
@@ -219,16 +142,10 @@ Edit file `/usr/bin/firefox` with [text editor][1] and add the following lines
 exec firejail /opt/firefox/firefox
 ```
 
-Change the download directory in Firefox settings to `~/Downloads/Firefox`
-
-Edit file `~/.config/sxhkd/sxhkdrc` with [text editor][1] and add the following lines
-```text
-# Open Firefox
-super + shift + f
-        /usr/bin/firefox
+Create and change the download directory in Firefox settings to `~/Downloads/Firefox`
+```bash
+mkdir -p ~/Downloads/Firefox
 ```
-
-Press `Super + Alt + r` and  `Super + esc`, open Firefox with `Super + Shift + f`
 
 ### Install Fonts
 ```bash
@@ -262,78 +179,19 @@ Reload fonts
 fc-cache -vf
 ```
 
-Copy the configuration file from alacritty
+Download file `~/.config/alacritty/alacritty.yml` with the following command
 ```bash
-su alejo
-cp /usr/share/doc/alacritty/example/alacritty.yml ~/.config/alacritty/
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
 ```
 
-Edit file `~/.config/alacritty/alacritty.yml` with [text editor][1] and modify the following lines
-```diff
-# Font configuration
--#font:
-+font:
-  # Normal (roman) font face
--  #normal:
-+  normal:
-    # Font family
-    #
-    # Default:
-    #   - (macOS) Menlo
-    #   - (Linux/BSD) monospace
-    #   - (Windows) Consolas
--    #family: monospace
-+    family: "Hack Nerd Font Mono"
-
-    # The `style` can be specified to pick a specific face.
--    #style: Regular
-+    style: Regular
-
-  # Bold font face
--  #bold:
-+  bold:
-    # Font family
-    #
-    # If the bold family is not specified, it will fall back to the
-    # value specified for the normal font.
--    #family: monospace
-+    family: "Hack Nerd Font Mono"
-
-    # The `style` can be specified to pick a specific face.
--    #style: Bold
-+    style: Bold
-
-  # Italic font face
--  #italic:
-+  italic:
-    # Font family
-    #
-    # If the italic family is not specified, it will fall back to the
-    # value specified for the normal font.
--    #family: monospace
-+    family: "Hack Nerd Font Mono"
-
-    # The `style` can be specified to pick a specific face.
--    #style: Italic
-+    style: Italic
-
-  # Bold italic font face
--  #bold_italic:
-+  bold_italic:
-    # Font family
-    #
-    # If the bold italic family is not specified, it will fall back to the
-    # value specified for the normal font.
--    #family: monospace
-+    family: "Hack Nerd Font Mono"
-
-    # The `style` can be specified to pick a specific face.
--    #style: Bold Italic
-+    style: Bold Italic
-
-  # Point size
--  #size: 11.0
-+  size: 12
+### Install Yay
+```bash
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -r yay
+yay -Yc
 ```
 
 ### Install Visual Studio Code
@@ -351,12 +209,12 @@ ln -s /opt/VSCode-linux-x64/bin/code /usr/bin/
 ### Set Wallpaper
 ```bash
 sudo pacman -S feh
-mkdir -p ~/Desktop/alejo/Images
+mkdir -p ~/Images
 ```
 
 Download wallpaper in Images and edit `~/.config/bspwm/bspwmrc` and add next line
 ```text
-feh --bg-fill /home/alejo/Desktop/alejo/Images/wallpaper.jpg
+feh --bg-fill /home/alejo/Images/wallpaper.jpg
 ```
 
 ### Install Neofetch
@@ -383,6 +241,11 @@ make -j$(nproc)
 sudo make install
 cd ../..
 rm -r polybar
+```
+
+Edit the file `~/.config/bspwm/bspwmrc` with [text editor][1] and add the following line
+```bash
+polybar &
 ```
 
 ### Install Picom
@@ -463,29 +326,20 @@ source ~/.aliases
 sudo pacman -S bat lsd
 ```
 
-Create or edit the file `~/.aliases` with [text editor][1] and add the following lines
+# Install Docker
+```zsh
+sudo su
+pacman -S docker docker-compose
+systemctl enable docker
+systemctl restart docker
+groupadd -r -g 82 www-data
+useradd -M -r -u 82 -g 82 -c "User HTTP files" -s /usr/bin/nologin www-data
+usermod -aG docker,www-data alejo
+```
+
+Download file `~/.aliases` with the following command
 ```bash
-# ls
-alias ls='lsd --group-dirs=first'
-alias ll='lsd -lh --group-dirs=first'
-alias la='lsd -Alh --group-dirs=first'
-alias l='lsd --group-dirs=first'
-
-# cat
-alias cat='/bin/bat'
-alias catn='/bin/cat'
-alias catnl='/bin/bat --paging=never'
-
-# diff
-alias diff='/usr/bin/diff --color=auto'
-
-# cd
-alias cd..='cd ..'
-
-# Colorize the grep command output for ease of use (good for log files)
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.aliases ~/.aliases
 ```
 
 ### Install fzf
@@ -569,17 +423,10 @@ Edit file `/usr/bin/google-chrome-stable` with [text editor][1] and add the foll
 ```diff
 # Launch
 -exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@"
-+exec firejail /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@" --force-dark-mode
++exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@" --force-dark-mode
 ```
 
 Change the download directory in Chrome settings to `~/Downloads/Chrome`
-
-Edit file `~/.config/sxhkd/sxhkdrc` with [text editor][1] and add the following lines
-```text
-# Open Chrome
-super + shift + g
-        /usr/bin/google-chrome-stable
-```
 
 # Install Mysql Workbench
 ```zsh
@@ -627,36 +474,6 @@ export VISUAL="$EDITOR"
 # Install Flameshot
 ```zsh
 sudo pacman -S flameshot
-```
-
-Edit file `~/.config/sxhkd/sxhkdrc` with [text editor][1] and add the following lines
-```text
-# Open Flameshot
-super + shift + s
-        /usr/bin/flameshot gui
-```
-
-# Install Docker
-```zsh
-sudo su
-pacman -S docker docker-compose
-systemctl enable docker
-systemctl restart docker
-groupadd -r -g 82 www-data
-useradd -M -r -u 82 -g 82 -c "User HTTP files" -s /usr/bin/nologin www-data
-usermod -aG docker,www-data alejo
-```
-
-Edit file `~/.aliases` with [text editor][1] and add the following lines
-```bash
-# Docker
-alias dps="docker ps"
-alias dpsa="docker ps -a"
-alias dim="docker images"
-alias dc="docker-compose"
-alias dcu="docker-compose up -d"
-alias dcd="docker-compose down"
-alias dcl="docker-compose logs"
 ```
 
 [1]:#text-editor
