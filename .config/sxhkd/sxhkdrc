@@ -126,7 +126,7 @@ super + ctrl + alt + space
 
 # move a floating window
 #super + {Left,Down,Up,Right}
-#       bspc node -v {-20 0,0 20,0 -20,20 0}
+#	bspc node -v {-20 0,0 20,0 -20,20 0}
 
 # Custom move window
 super + ctrl + {Left,Down,Up,Right}
