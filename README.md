@@ -279,19 +279,25 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 ```
 
-### Install sudo zsh plugin
+### Install zsh plugins (sudo, autosuggestions, syntax highlighting)
 ```zsh
 sudo su
-mkdir -p /usr/share/zsh-plugins
+mkdir -p /usr/share/zsh/plugins
 cd !$
-chown alejo:alejo /usr/share/zsh-plugins
+chown alejo:alejo /usr/share/zsh/plugins
 su alejo
+mkdir sudo
+cd !$
 wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+sudo pacman -S zsh-autosuggestions zsh-syntax-highlighting
 ```
 
 Edit file `~/.zshrc` with [text editor][1] and add the following lines
 ```zsh
-source /usr/share/zsh-plugins/sudo.plugin.zsh
+# Plugins
+source /usr/share/zsh/plugins/sudo/sudo.plugin.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ```
 
 ### Install SSH
