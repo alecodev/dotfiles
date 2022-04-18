@@ -25,6 +25,15 @@ sudo su
 	rm Meslo.zip
 	```
 
+- #### ***Material Design Font***
+	---
+	Descargue la fuente ***Material Design Font*** de la página `https://github.com/Templarian/MaterialDesign-Font` e instálela con los siguientes comandos
+	```bash
+	mkdir -p /usr/local/share/fonts/MaterialDesign-Font
+	cd !$
+	wget https://github.com/Templarian/MaterialDesign-Font/raw/master/MaterialDesignIconsDesktop.ttf
+	```
+
 Recargue las fuentes
 ```bash
 fc-cache -vf

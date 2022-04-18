@@ -232,14 +232,14 @@ echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 zsh
 
 sudo su
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-zsh
-
-ln -sf /home/alejo/.zshrc ~/
-
 usermod --shell /usr/bin/zsh alejo
 usermod --shell /usr/bin/zsh root
+
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+ln -sf /home/alejo/.zshrc ~/
+ln -sf /home/alejo/.p10k.zsh ~/
+zsh
+
 su alejo
 ```
 

@@ -15,13 +15,6 @@ sudo su
 >yay -S google-chrome
 >```
 
-Edit file `/usr/bin/google-chrome-stable` with [text editor][1] and add the following lines
-```diff
-# Launch
--exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@"
-+exec /opt/google/chrome/google-chrome $CHROME_USER_FLAGS "$@" --force-dark-mode
-```
-
 Create and change the download directory in Chrome settings to `~/Downloads/Chrome`
 ```bash
 mkdir -p ~/Downloads/Chrome
@@ -29,6 +22,7 @@ mkdir -p ~/Downloads/Chrome
 
 Execute the following commands
 ```zsh
+echo "--force-dark-mode" >> ~/.config/chrome-flags.conf
 sudo pacman -S noto-fonts-emoji
 gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 ```
