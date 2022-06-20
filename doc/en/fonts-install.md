@@ -25,6 +25,26 @@ sudo su
 	rm Meslo.zip
 	```
 
+- #### ***JetBrainsMono Nerd Font***
+	---
+	Download the font ***JetBrainsMono Nerd Font*** from the page `https://www.nerdfonts.com/font-downloads` and install with the following commands
+	```bash
+	mkdir -p /usr/local/share/fonts/nerd-fonts/JetBrainsMono
+	cd !$
+	mv /home/alejo/Downloads/Firefox/JetBrainsMono.zip .
+	unzip JetBrainsMono.zip
+	rm JetBrainsMono.zip
+	```
+
+- #### ***Rofi***
+	---
+	Download the font ***Rofi*** from the page `https://github.com/adi1090x/rofi/tree/master/fonts` and install with the following commands
+	```bash
+	mkdir -p /usr/local/share/fonts/rofi
+	cd !$
+	mv -r /home/alejo/Downloads/Firefox/* .
+	```
+
 - #### ***Material Design Font***
 	---
 	Download the font ***Material Design Font*** from the page `https://github.com/Templarian/MaterialDesign-Font` and install with the following commands
