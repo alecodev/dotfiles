@@ -6,7 +6,7 @@
 >- Enable EFI
 >- Disable 3D acceleration
 
-Sets the console keyboard layout (in my case 'es'). You can validate the available keyboard layouts with the following command: `ls /usr/share/kbd/keymaps/**/*.map.gz`
+Sets the console keyboard layout (in my case 'es' or 'la-latin1'). You can validate the available keyboard layouts with the following command: `ls /usr/share/kbd/keymaps/**/*.map.gz`
 ```bash
 loadkeys es
 ```
@@ -74,7 +74,7 @@ lsblk
 
 Install the basic packages
 ```bash
-pacstrap /mnt base base-devel linux linux-firmware neovim dhcpcd
+pacstrap /mnt base base-devel linux linux-firmware neovim networkmanager
 ```
 
 Generate the Fstab file
@@ -115,9 +115,9 @@ Add the domains to the file `/etc/hosts` with [text editor][1], replace the name
 127.0.1.1   Arch.localdomain  Arch
 ```
 
-Activate the DHCPCD service
+Activate the NetworkManager service
 ```bash
-systemctl enable dhcpcd.service
+systemctl enable NetworkManager
 ```
 
 Set the password for the root user

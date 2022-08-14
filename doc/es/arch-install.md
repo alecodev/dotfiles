@@ -6,7 +6,7 @@
 >- Habilite EFI
 >- Deshabilite la aceleración 3D
 
-Establezca la distribución del teclado de la consola (en mi caso, 'es'). Puede validar las distribuciones de teclado disponibles con el siguiente comando : `ls /usr/share/kbd/keymaps/**/*.map.gz`
+Establezca la distribución del teclado de la consola (en mi caso, 'es' o 'la-latin1'). Puede validar las distribuciones de teclado disponibles con el siguiente comando : `ls /usr/share/kbd/keymaps/**/*.map.gz`
 ```bash
 loadkeys es
 ```
@@ -74,7 +74,7 @@ lsblk
 
 Instale los paquetes básicos
 ```bash
-pacstrap /mnt base base-devel linux linux-firmware neovim dhcpcd
+pacstrap /mnt base base-devel linux linux-firmware neovim networkmanager
 ```
 
 Genere el archivo Fstab
@@ -115,9 +115,9 @@ Agrega los dominios al archivo `/etc/hosts` con el [editor de texto][1], reempla
 127.0.1.1   Arch.localdomain  Arch
 ```
 
-Activa el servicio DHCPCD
+Activa el servicio NetworkManager
 ```bash
-systemctl enable dhcpcd.service
+systemctl enable NetworkManager
 ```
 
 Establezca la contraseña para el usuario root

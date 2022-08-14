@@ -31,7 +31,7 @@ Edit the file `/etc/lightdm/lightdm.conf` with [text editor][1] and modify the f
 +greeter-session=lightdm-gtk-greeter
 ...
 -display-setup-script=
-+display-setup-script=/usr/bin/setxkbmap es
++display-setup-script=/usr/bin/setxkbmap -layout latam,es
 ...
 -greeter-setup-script=
 +greeter-setup-script=/usr/bin/numlockx on
@@ -48,9 +48,11 @@ su alejo
 ```
 
 Create or edit the file `~/.xprofile` with [text editor][1] and set the following lines
+>**In case of running in a virtual machine like VirtualBox add the following line**
+>
+>VBoxClient-all &
 ```text
 dbus-update-activation-environment --systemd DISPLAY &
-VBoxClient-all &
 sxhkd &
 exec bspwm
 ```
@@ -64,6 +66,8 @@ cp sxhkdrc ~/.config/sxhkd
 cd ~
 chmod +x ~/.config/bspwm/bspwmrc
 sed -i 's/urxvt/alacritty/' ~/.config/sxhkd/sxhkdrc
+sed -i 's/super + @space/super + r/' ~/.config/sxhkd/sxhkdrc
+sed -i 's/dmenu_run/rofi -show run/' ~/.config/sxhkd/sxhkdrc
 ```
 
 Reboot and log in with the other user
@@ -93,7 +97,7 @@ chmod +x ./{bspwm_resize,bspwm_smart_move}
 
 Download file `~/.config/sxhkd/sxhkdrc` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/sxhkd/sxhkdrc ~/.config/sxhkd/sxhkdrc
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/sxhkd/sxhkdrc -O ~/.config/sxhkd/sxhkdrc
 ```
 Press `Super + Alt + r` and  `Super + esc`
 
@@ -121,7 +125,7 @@ ln -s /home/alejo/{.xprofile,.bashrc} ~/
 
 Download file `~/.config/alacritty/alacritty.yml` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml -O ~/.config/alacritty/alacritty.yml
 ```
 
 ### Set Wallpaper
@@ -140,13 +144,18 @@ feh --bg-fill /home/alejo/Images/wallpaper.jpg
 sudo pacman -S neofetch
 ```
 
+### Install Bluetooth
+```bash
+sudo pacman -S bluez bluez-utils  
+```
+
 ### Install Polybar
 ```bash
 mkdir -p ~/.config/polybar
 sudo su
 ln -s /home/alejo/.config/polybar ~/.config/
 su alejo
-sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl pulseaudio
+sudo pacman -S cmake pkg-config libuv cairo libxcb python3 xcb-proto xcb-util-image xcb-util-wm python-sphinx python-packaging xcb-util-cursor xcb-util-xrm alsa-lib libpulse i3-wm jsoncpp libmpdclient libnl curl pipewire
 cd ~/Downloads/Firefox/
 
 git clone --recursive https://github.com/polybar/polybar
@@ -267,16 +276,12 @@ usermod -aG docker,www-data alejo
 
 Download file `~/.aliases` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.aliases ~/.aliases
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.aliases -O ~/.aliases
 ```
 
 ### Install fzf
 ```zsh
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
-sudo su
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+sudo pacman -S fzf
 ```
 
 ### Install zsh plugins (sudo, autosuggestions, syntax highlighting)
@@ -314,7 +319,7 @@ echo "# host-specific options\n" >> ~/.ssh/config
 
 Download file `~/.config/systemd/user/ssh-agent.service` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service -O ~/.config/systemd/user/ssh-agent.service
 ```
 
 Edit file `~/.bashrc` and `~/.zshrc` with [text editor][1] and add the following lines
@@ -328,16 +333,6 @@ Enable the service
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
 ssh-add ~/.ssh/id_rsa
-```
-
-### Install Mysql Workbench
-```zsh
-sudo pacman -S mysql-workbench
-dbus-update-activation-environment --systemd DISPLAY
-sudo su
-cd /usr/share/mysql-workbench/data
-mv code_editor.xml code_editor.xml_original
-wget https://raw.githubusercontent.com/mleandrojr/mysql-workbench-dark-theme/master/code_editor.xml
 ```
 
 ### Generating a GPG key
