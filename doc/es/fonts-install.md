@@ -25,11 +25,31 @@ sudo su
 	rm Meslo.zip
 	```
 
+- #### ***JetBrainsMono Nerd Font***
+	---
+	Descargue la fuente ***JetBrainsMono Nerd Font*** de la página `https://www.nerdfonts.com/font-downloads` e instálela con los siguientes comandos
+	```bash
+	mkdir -p /usr/local/share/fonts/nerd-fonts/JetBrainsMono
+	cd !$
+	mv /home/alejo/Downloads/Firefox/JetBrainsMono.zip .
+	unzip JetBrainsMono.zip
+	rm JetBrainsMono.zip
+	```
+
+- #### ***Rofi***
+	---
+	Descargue la fuente ***Rofi*** de la página `https://github.com/adi1090x/rofi/tree/master/fonts` e instálela con los siguientes comandos
+	```bash
+	mkdir -p /usr/local/share/fonts/Rofi
+	cd !$
+	mv -r /home/alejo/Downloads/Firefox/* .
+	```
+
 - #### ***Material Design Font***
 	---
 	Descargue la fuente ***Material Design Font*** de la página `https://github.com/Templarian/MaterialDesign-Font` e instálela con los siguientes comandos
 	```bash
-	mkdir -p /usr/local/share/fonts/MaterialDesign-Font
+	mkdir -p /usr/local/share/fonts/MaterialDesign
 	cd !$
 	wget https://github.com/Templarian/MaterialDesign-Font/raw/master/MaterialDesignIconsDesktop.ttf
 	```

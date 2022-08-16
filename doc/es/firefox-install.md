@@ -9,11 +9,7 @@ cd !$
 touch /usr/bin/firefox
 chmod 755 /usr/bin/firefox
 su alejo
-```
-
-Obtén la URL de descarga del archivo tar.* de Firefox `curl "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"` y cámbiala en el siguiente comando
-```bash
-wget "https://download-installer.cdn.mozilla.net/pub/firefox/releases/98.0.2/linux-x86_64/en-US/firefox-98.0.2.tar.bz2"
+wget $(curl -s "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"|awk -F'"' '{print $2}')
 tar -xf firefox-*
 rm firefox-*
 ```

@@ -40,7 +40,7 @@ sudo su
 	---
 	Download the font ***Rofi*** from the page `https://github.com/adi1090x/rofi/tree/master/fonts` and install with the following commands
 	```bash
-	mkdir -p /usr/local/share/fonts/rofi
+	mkdir -p /usr/local/share/fonts/Rofi
 	cd !$
 	mv -r /home/alejo/Downloads/Firefox/* .
 	```
@@ -49,7 +49,7 @@ sudo su
 	---
 	Download the font ***Material Design Font*** from the page `https://github.com/Templarian/MaterialDesign-Font` and install with the following commands
 	```bash
-	mkdir -p /usr/local/share/fonts/MaterialDesign-Font
+	mkdir -p /usr/local/share/fonts/MaterialDesign
 	cd !$
 	wget https://github.com/Templarian/MaterialDesign-Font/raw/master/MaterialDesignIconsDesktop.ttf
 	```
