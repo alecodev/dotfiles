@@ -51,7 +51,7 @@ sudo su
 	```bash
 	mkdir -p /usr/local/share/fonts/MaterialDesign
 	cd !$
-	wget https://github.com/Templarian/MaterialDesign-Font/raw/master/MaterialDesignIconsDesktop.ttf
+	wget --quiet https://github.com/Templarian/MaterialDesign-Font/raw/master/MaterialDesignIconsDesktop.ttf
 	```
 
 Recargue las fuentes

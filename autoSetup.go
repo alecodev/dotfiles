@@ -34,16 +34,17 @@ func installPackages() bool {
 		"nmap", "wget", "curl",
 		"xclip",
 		"p7zip", "unzip",
-		"zsh",
+		"zsh", "zsh-autosuggestions", "zsh-syntax-highlighting",
+		"tmux",
 		"htop",
 		"flameshot",
 		"libsecret", "gnome-keyring",
 		"xorg-server", "xorg-xev",
 		"bspwm", "sxhkd",
 		"alacritty",
-		"rofi",
+		"rofi", "polybar", "picom",
 		"lightdm", "lightdm-gtk-greeter",
-		"bat", "lsd", "fzf",
+		"bat", "lsd", "fzf", "jq",
 		"feh",
 		"neofetch",
 		"bluez", "bluez-utils", "pipewire",
@@ -154,7 +155,7 @@ func setupFonts() bool {
 
 	for _, filename := range rofiFonts {
 		fmt.Println("- [Rofi " + filename + " Font]")
-		command += "wget --quiet " + _url + filename + ".ttf -O " + filename + ".ttf && "
+		command += "wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf && "
 	}
 
 	err := Shell("sudo " + ShellToUse + " -c '" + strings.TrimRight(command, " && ") + "'")
@@ -170,7 +171,7 @@ func setupFonts() bool {
 	fmt.Println("- [Material Design Icons Font]")
 	command = "mkdir -p " + _path + " && " +
 		"cd " + _path + " && " +
-		"wget --quiet " + _url + filename + ".ttf -O " + filename + ".ttf"
+		"wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf"
 
 	err = Shell("sudo " + ShellToUse + " -c '" + command + "'")
 	if err != nil {

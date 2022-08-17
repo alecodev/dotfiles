@@ -90,14 +90,14 @@ Create the directories and configuration files of bspwm and alacritty
 mkdir -p ~/.config/alacritty
 mkdir ~/.config/bspwm/scripts
 cd !$
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_resize
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_smart_move
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_resize
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/bspwm/scripts/bspwm_smart_move
 chmod +x ./{bspwm_resize,bspwm_smart_move}
 ```
 
 Download file `~/.config/sxhkd/sxhkdrc` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/sxhkd/sxhkdrc -O ~/.config/sxhkd/sxhkdrc
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/sxhkd/sxhkdrc --output-document=~/.config/sxhkd/sxhkdrc
 ```
 Press `Super + Alt + r` and  `Super + esc`
 
@@ -125,7 +125,7 @@ ln -s /home/alejo/{.xprofile,.bashrc} ~/
 
 Download file `~/.config/alacritty/alacritty.yml` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml -O ~/.config/alacritty/alacritty.yml
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/alacritty/alacritty.yml --output-document=~/.config/alacritty/alacritty.yml
 ```
 
 ### Set Wallpaper
@@ -146,7 +146,7 @@ sudo pacman -S neofetch
 
 ### Install Bluetooth
 ```bash
-sudo pacman -S bluez bluez-utils  
+sudo pacman -S bluez bluez-utils
 ```
 
 ### Install Polybar
@@ -170,9 +170,9 @@ cd ../..
 rm -r polybar
 ```
 
->Or install with yay
+>Or install with the following command
 >```bash
->yay -S polybar
+>sudo pacman -S polybar
 >```
 
 Edit the file `~/.config/bspwm/bspwmrc` with [text editor][1] and add the following line
@@ -258,11 +258,6 @@ Edit file `~/.zshrc` and `~/.bashrc` with [text editor][1] and add the following
 source ~/.aliases
 ```
 
-### Install bat and lsd
-```zsh
-sudo pacman -S bat lsd
-```
-
 ### Install Docker
 ```zsh
 sudo su
@@ -274,14 +269,28 @@ useradd -M -r -u 82 -g 82 -c "User HTTP files" -s /usr/bin/nologin www-data
 usermod -aG docker,www-data alejo
 ```
 
-Download file `~/.aliases` with the following command
-```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.aliases -O ~/.aliases
+### Install DBeaver
+```zsh
+cd /opt
+rm -rf dbeaver
+wget --quiet https://dbeaver.io/files/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz --output-document=dbeaver-ce.tar.gz
+tar -xf dbeaver-ce.tar.gz
+rm dbeaver-ce.tar.gz
 ```
 
-### Install fzf
+>Or install with the following command
+>```zsh
+>sudo pacman -S dbeaver
+>```
+
+Download file `~/.aliases` with the following command
+```bash
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.aliases --output-document=~/.aliases
+```
+
+### Install bat, lsd & fzf
 ```zsh
-sudo pacman -S fzf
+sudo pacman -S bat lsd fzf
 ```
 
 ### Install zsh plugins (sudo, autosuggestions, syntax highlighting)
@@ -293,7 +302,7 @@ chown alejo:alejo /usr/share/zsh/plugins
 su alejo
 mkdir sudo
 cd !$
-wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
+wget --quiet https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh
 sudo pacman -S zsh-autosuggestions zsh-syntax-highlighting
 ```
 
@@ -319,7 +328,7 @@ echo "# host-specific options\n" >> ~/.ssh/config
 
 Download file `~/.config/systemd/user/ssh-agent.service` with the following command
 ```bash
-wget https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service -O ~/.config/systemd/user/ssh-agent.service
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service --output-document=~/.config/systemd/user/ssh-agent.service
 ```
 
 Edit file `~/.bashrc` and `~/.zshrc` with [text editor][1] and add the following lines
