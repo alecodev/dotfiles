@@ -365,6 +365,9 @@ export GPG_TTY=$(tty)
 # Editor Default
 export EDITOR="/usr/bin/nvim"
 export VISUAL="$EDITOR"
+
+# Golang
+export PATH=$PATH:/usr/local/go/bin
 ```
 
 Edit file `~/.zshrc` with [text editor][1] and add the following lines
@@ -375,6 +378,9 @@ export GPG_TTY=$TTY
 # Editor Default
 export EDITOR="/usr/bin/nvim"
 export VISUAL="$EDITOR"
+
+# Golang
+export PATH=$PATH:/usr/local/go/bin
 ```
 
 [1]:#text-editor

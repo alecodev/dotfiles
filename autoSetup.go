@@ -141,47 +141,49 @@ func setupFonts() bool {
 		}
 	}
 
-	_url = "https://github.com/adi1090x/rofi/raw/master/fonts/"
-	_path = "/usr/local/share/fonts/Rofi/"
-	rofiFonts := []string{
-		"GrapeNuts-Regular",
-		"Icomoon-Feather",
-		"Iosevka-Nerd-Font-Complete",
-		"JetBrains-Mono-Nerd-Font-Complete",
-	}
+	/*
+		_url = "https://github.com/adi1090x/rofi/raw/master/fonts/"
+		_path = "/usr/local/share/fonts/Rofi/"
+		rofiFonts := []string{
+			"GrapeNuts-Regular",
+			"Icomoon-Feather",
+			"Iosevka-Nerd-Font-Complete",
+			"JetBrains-Mono-Nerd-Font-Complete",
+		}
 
-	command := "mkdir -p " + _path + " && " +
-		"cd " + _path + " && "
+		command := "mkdir -p " + _path + " && " +
+			"cd " + _path + " && "
 
-	for _, filename := range rofiFonts {
-		fmt.Println("- [Rofi " + filename + " Font]")
-		command += "wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf && "
-	}
+		for _, filename := range rofiFonts {
+			fmt.Println("- [Rofi " + filename + " Font]")
+			command += "wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf && "
+		}
 
-	err := Shell("sudo " + ShellToUse + " -c '" + strings.TrimRight(command, " && ") + "'")
-	if err != nil {
-		log.Printf("Error Fonts [%v]: %v\n", "Rofi", err)
-		return false
-	}
+		err := Shell("sudo " + ShellToUse + " -c '" + strings.TrimRight(command, " && ") + "'")
+		if err != nil {
+			log.Printf("Error Fonts [%v]: %v\n", "Rofi", err)
+			return false
+		}
 
-	_url = "https://github.com/Templarian/MaterialDesign-Font/raw/master/"
-	_path = "/usr/local/share/fonts/MaterialDesign/"
-	filename := "MaterialDesignIconsDesktop"
+		_url = "https://github.com/Templarian/MaterialDesign-Font/raw/master/"
+		_path = "/usr/local/share/fonts/MaterialDesign/"
+		filename := "MaterialDesignIconsDesktop"
 
-	fmt.Println("- [Material Design Icons Font]")
-	command = "mkdir -p " + _path + " && " +
-		"cd " + _path + " && " +
-		"wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf"
+		fmt.Println("- [Material Design Icons Font]")
+		command = "mkdir -p " + _path + " && " +
+			"cd " + _path + " && " +
+			"wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf"
 
-	err = Shell("sudo " + ShellToUse + " -c '" + command + "'")
-	if err != nil {
-		log.Printf("Error Fonts [%v]: %v\n", "Material Design Icons Font", err)
-		return false
-	}
+		err = Shell("sudo " + ShellToUse + " -c '" + command + "'")
+		if err != nil {
+			log.Printf("Error Fonts [%v]: %v\n", "Material Design Icons Font", err)
+			return false
+		}
+	*/
 
 	fmt.Println("- [Fonts Reload]")
 
-	err = Shell("sudo " + ShellToUse + " -c 'fc-cache -vf'")
+	var err = Shell("sudo " + ShellToUse + " -c 'fc-cache -vf'")
 	if err != nil {
 		log.Printf("Error Fonts Reload: %v\n", err)
 		return false
