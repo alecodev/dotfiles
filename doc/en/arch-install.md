@@ -157,6 +157,11 @@ CheckSpace
 >usermod -aG vboxsf alejo
 >```
 
+>**In case of having dual boot with Windows execute the following command**
+>```bash
+>pacman -S ntfs-3g
+>```
+
 Set the bootloader
 ```bash
 pacman -S grub sudo efibootmgr os-prober intel-ucode

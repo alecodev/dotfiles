@@ -8,7 +8,7 @@ chown alejo:alejo opt/
 cd !$
 touch /usr/bin/firefox
 chmod 755 /usr/bin/firefox
-su alejo
+exit
 wget --quiet $(curl -s "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US"|awk -F'"' '{print $2}')
 tar -xf firefox-*
 rm firefox-*

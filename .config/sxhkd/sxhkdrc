@@ -55,7 +55,7 @@ super + ctrl + {m,x,y,z}
 #
 
 # focus the node in the given direction
-super + {_,shift + }{Left,Down,Up,Right}
+super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
@@ -97,7 +97,7 @@ super + {_,alt + }KP_{1-9,End,Down,Next,Left,Begin,Right,Home,Up,Prior,0,Insert}
 #
 
 # preselect the direction
-super + ctrl + alt + {Left,Down,Up,Right}
+super + ctrl + alt + {h,j,k,l}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
@@ -129,12 +129,12 @@ super + ctrl + alt + space
 #	bspc node -v {-20 0,0 20,0 -20,20 0}
 
 # Custom move window
-super + ctrl + {Left,Down,Up,Right}
-	/home/alejo/.config/bspwm/scripts/bspwm_smart_move {west,south,north,east}
+super + ctrl + {h,j,k,l}
+	~/.config/bspwm/scripts/bspwm_smart_move {west,south,north,east}
 
 # Custom resize window
-alt + super + {Left,Down,Up,Right}
-	/home/alejo/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
+alt + super + {h,j,k,l}
+	~/.config/bspwm/scripts/bspwm_resize {west,south,north,east}
 
 # Open Firefox
 super + shift + f

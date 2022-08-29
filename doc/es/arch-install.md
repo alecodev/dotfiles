@@ -157,6 +157,11 @@ CheckSpace
 >usermod -aG vboxsf alejo
 >```
 
+>**En caso de tener arranque dual con Windows ejecute el siguiente comando**
+>```bash
+>pacman -S ntfs-3g
+>```
+
 Configurar el gestor de arranque
 ```bash
 pacman -S grub sudo efibootmgr os-prober intel-ucode
