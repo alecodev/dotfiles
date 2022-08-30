@@ -80,11 +80,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
 	git
 	sudo
+	fzf
 	copypath
 	copyfile
 	# archlinux
 	docker-compose
 	z
+	zsh-interactive-cd
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 )
@@ -117,11 +119,23 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # Alias
 source ~/.aliases
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# Ranger keybind
+run_ranger () {
+    ranger < $TTY
+    # echo
+    # ranger --choosedir=$HOME/.rangerdir < $TTY
+    # LASTDIR=`cat $HOME/.rangerdir`
+    # cd "$LASTDIR"
+    zle reset-prompt
+}
+zle -N run_ranger
+bindkey '^e' run_ranger
 
 # Service ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

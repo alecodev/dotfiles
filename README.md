@@ -30,10 +30,10 @@ p7zip unzip \
 zsh tmux \
 dunst ranger htop locate \
 flameshot \
-libsecret gnome-keyring \
+libsecret gnome-keyring gnome-themes-extra \
 xorg-server xorg-xev \
 bspwm sxhkd \
-alacritty \
+alacritty kitty \
 rofi polybar picom \
 lightdm lightdm-gtk-greeter \
 bat lsd fzf jq \
@@ -92,11 +92,11 @@ cd dotfiles
 
 # Add permissions to files
 sudo chmod +x $PWD/.config/bspwm/bspwmrc
-sudo chmod +x $PWD/.config/bspwm/scripts/{bspwm_resize,bspwm_smart_move}
+sudo chmod +x $PWD/.config/bspwm/scripts/{bspwm_layout,bspwm_resize,bspwm_smart_move}
 
 # Create symbolic links of the files
-ln -sf $PWD/.config/{alacritty,bspwm,picom,polybar,sxhkd,systemd} ~/.config/
-ln -sf $PWD/{.aliases,.bashrc,.p10k.zsh,.zshrc} ~/
+ln -sf $PWD/.config/{alacritty,bspwm,gtk-3.0,kitty,picom,polybar,sxhkd,systemd} ~/.config/
+ln -sf $PWD/{.aliases,.bashrc,.p10k.zsh,.xprofile,.zshrc} ~/
 
 # Change default shell per user
 sudo usermod --shell /usr/bin/zsh $(whoami)
@@ -120,6 +120,10 @@ sudo ln -sf ~/{.aliases,.bashrc,.p10k.zsh,.zshrc} /root/
 
 # Set Wallpaper
 wget --quiet https://wallpaperaccess.com/full/2098223.png --output-document=~/Images/wallpaper.png
+
+# Change power button behavior
+sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf
+sudo systemctl restart systemd-logind
 ```
 
 Reboot and log in with the other user
@@ -145,5 +149,6 @@ Ready now you can log in with the other user and use bspwm by pressing `Super + 
 - [Google Chrome](doc/en/chrome-install.md)
 - [Docker](doc/en/docker-install.md)
 - [DBeaver](doc/en/dbeaver-install.md)
+- [DroidCam](doc/en/droidcam-install.md)
 
 [1]:#text-editor

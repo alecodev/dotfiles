@@ -24,7 +24,8 @@ Ejecuta los siguientes comandos
 ```zsh
 echo "--force-dark-mode" >> ~/.config/chrome-flags.conf
 sudo pacman -S noto-fonts-emoji
-gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 ```
 
 [1]:../../README.es.md#editor-de-texto

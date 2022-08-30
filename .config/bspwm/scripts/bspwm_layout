@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# let's name it bsplayout
+
+userLayout() {
+    case $(bspc query -T -d | jq -r .userLayout) in
+        monocle)
+            echo "恵"
+            ;;
+        *)
+            echo "舘"
+            ;;
+    esac
+}
+
+bspc subscribe report | while read -r line; do
+    userLayout
+done
