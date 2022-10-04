@@ -1,3 +1,5 @@
+neofetch --ascii_distro Arch_small --gtk3 off --color_blocks off --disable cpu gpu packages shell uptime kernel resolution
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -122,6 +124,10 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Remove extra space at the end of line
+ZLE_RPROMPT_INDENT=0
+
+
 # Alias
 source ~/.aliases
 
@@ -135,7 +141,8 @@ run_ranger () {
     zle reset-prompt
 }
 zle -N run_ranger
-bindkey '^e' run_ranger
+bindkey '^[[101;9u' run_ranger
+# showkey -a # to detect key
 
 # Service ssh-agent
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

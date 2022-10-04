@@ -92,7 +92,7 @@ cd dotfiles
 
 # Add permissions to files
 sudo chmod +x $PWD/.config/bspwm/bspwmrc
-sudo chmod +x $PWD/.config/bspwm/scripts/{bspwm_layout,bspwm_resize,bspwm_smart_move}
+sudo chmod +x $PWD/.config/bspwm/scripts/{bspwm_count,bspwm_layout,bspwm_resize,bspwm_smart_move}
 
 # Create symbolic links of the files
 ln -sf $PWD/.config/{alacritty,bspwm,gtk-3.0,kitty,picom,polybar,sxhkd,systemd} ~/.config/

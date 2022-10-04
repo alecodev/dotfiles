@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+bspc subscribe report | while read -r line; do
+   echo "$(bspc query -N -d $somedesktop -n .window.\!hidden | wc -l)"
+done
