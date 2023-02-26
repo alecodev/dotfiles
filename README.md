@@ -24,7 +24,7 @@ Login with the root user and run the following commands
 pacman -Syu
 pacman -S --needed gcc make git base-devel \
 numlockx \
-nmap wget curl \
+nmap wget curl inetutils dnsutils \
 xclip \
 p7zip unzip \
 zsh tmux \
@@ -41,7 +41,8 @@ feh \
 neofetch \
 pipewire pipewire-pulse \
 udisks2 udiskie \
-openssh
+openssh \
+keepassxc redshift
 ```
 
 Set keyboard layout
@@ -96,7 +97,7 @@ sudo chmod +x $PWD/.config/bspwm/scripts/{bspwm_count,bspwm_layout,bspwm_resize,
 
 # Create symbolic links of the files
 ln -sf $PWD/.config/{alacritty,bspwm,gtk-3.0,kitty,picom,polybar,sxhkd,systemd} ~/.config/
-ln -sf $PWD/{.aliases,.bashrc,.p10k.zsh,.xprofile,.zshrc} ~/
+ln -sf $PWD/{.aliases,.bashrc,.p10k.zsh,.xprofile,.zshrc,.tmux.conf} ~/
 
 # Change default shell per user
 sudo usermod --shell /usr/bin/zsh $(whoami)
@@ -113,13 +114,16 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~
 # Install Oh My Zsh for root user
 sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Rest after installation
+exit
+
 # Create symbolic links of the files to the root user
 sudo ln -sf ~/.oh-my-zsh/custom/plugins/{zsh-autosuggestions,zsh-syntax-highlighting} /root/.oh-my-zsh/custom/plugins/
 sudo ln -sf ~/.oh-my-zsh/custom/themes/powerlevel10k /root/.oh-my-zsh/custom/themes/
 sudo ln -sf ~/{.aliases,.bashrc,.p10k.zsh,.zshrc} /root/
 
 # Set Wallpaper
-wget --quiet https://wallpaperaccess.com/full/2098223.png --output-document=~/Images/wallpaper.png
+wget --quiet https://wallpaperaccess.com/full/2098223.png --output-document ~/Images/wallpaper.png
 
 # Change power button behavior
 sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf
@@ -148,7 +152,17 @@ Ready now you can log in with the other user and use bspwm by pressing `Super + 
 - [Firefox](doc/en/firefox-install.md)
 - [Google Chrome](doc/en/chrome-install.md)
 - [Docker](doc/en/docker-install.md)
+- [K8s](doc/en/k8s-install.md)
 - [DBeaver](doc/en/dbeaver-install.md)
 - [DroidCam](doc/en/droidcam-install.md)
+- [VirtualBox](doc/en/virtualbox-install.md)
+---
+
+
+>### Helpful Links
+>
+>- https://wiki.archlinux.org/title/backlight#Switch_off_the_backlight
+>- https://wiki.archlinux.org/title/backlight#External_monitors
+>- https://wiki.archlinux.org/title/Power_management#Power_managers
 
 [1]:#text-editor

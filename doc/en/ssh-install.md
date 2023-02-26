@@ -14,7 +14,7 @@ mkdir -p ~/.config/systemd/user
 
 Download file `~/.config/systemd/user/ssh-agent.service` with the following command
 ```bash
-wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service --output-document=~/.config/systemd/user/ssh-agent.service
+wget --quiet https://raw.githubusercontent.com/alecodev/dotfiles/main/.config/systemd/user/ssh-agent.service --output-document ~/.config/systemd/user/ssh-agent.service
 ```
 
 Edit file `~/.bashrc` and `~/.zshrc` with [text editor][1] and add the following lines

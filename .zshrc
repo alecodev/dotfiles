@@ -87,6 +87,8 @@ plugins=(
 	copyfile
 	# archlinux
 	docker-compose
+	kubectl
+	minikube
 	z
 	zsh-interactive-cd
 	zsh-autosuggestions
@@ -156,3 +158,10 @@ export VISUAL="$EDITOR"
 
 # Golang
 export PATH=$PATH:/usr/local/go/bin
+
+# K8s
+# get zsh complete kubectl
+source <(kubectl completion zsh)
+alias kubectl=kubecolor
+# make completion work with kubecolor
+compdef kubecolor=kubectl

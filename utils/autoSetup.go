@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 )
 
@@ -35,7 +36,7 @@ func installPackages() bool {
 	packageRequire := []string{
 		"gcc", "make", "git", "base-devel",
 		"numlockx",
-		"nmap", "wget", "curl",
+		"nmap", "wget", "curl", "inetutils", "dnsutils",
 		"xclip",
 		"p7zip", "unzip",
 		"zsh", "tmux",
@@ -51,12 +52,13 @@ func installPackages() bool {
 		"feh",
 		"neofetch",
 		"pipewire", "pipewire-pulse",
-		"docker", "docker-compose",
+		"docker", "docker-compose", "kubectl", "minikube",
 		"udisks2", "udiskie",
 		"openssh",
 		"firefox", "firejail",
 		"noto-fonts-emoji",
 		"dbeaver",
+		"keepassxc", "redshift",
 	}
 
 	if !virtualMachine {
@@ -85,6 +87,8 @@ func installPackages() bool {
 	// Install package with Yay
 	packageYay := []string{
 		"google-chrome",
+		"kubecolor",
+		"openrgb",
 		"visual-studio-code-bin",
 	}
 
@@ -146,7 +150,7 @@ func setupFonts() bool {
 
 	for _, filename := range rofiFonts {
 		fmt.Println("- [Rofi " + filename + " Font]")
-		command += "wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf && "
+		command += "wget --quiet " + _url + filename + ".ttf --output-document " + filename + ".ttf && "
 	}
 
 	err = Shell("sudo " + ShellToUse + " -c '" + strings.TrimRight(command, " && ") + "'")
@@ -162,7 +166,7 @@ func setupFonts() bool {
 	fmt.Println("- [Material Design Icons Font]")
 	command = "mkdir -p " + _path + " && " +
 		"cd " + _path + " && " +
-		"wget --quiet " + _url + filename + ".ttf --output-document=" + filename + ".ttf"
+		"wget --quiet " + _url + filename + ".ttf --output-document " + filename + ".ttf"
 
 	err = Shell("sudo " + ShellToUse + " -c '" + command + "'")
 	if err != nil {
@@ -187,14 +191,15 @@ func setupENV() bool {
 	// Setup env
 	fmt.Println("[File Settings]")
 	file := map[string]string{
-		"1) Creating directories":             "mkdir -p ~/Downloads/{Chrome,Firefox}",
+		"1) Creating directories Downloads":   "mkdir -p ~/Downloads/{Chrome,Firefox}",
+		"1.1) Creating directories config":    "mkdir -p ~/{.config,.ssh,Images}",
 		"2) Set up Chrome dark theme":         "echo '--force-dark-mode' >> ~/.config/chrome-flags.conf",
 		"3) Set system dark theme":            "sudo gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'",
 		"4) Set system dark color":            "sudo gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'",
 		"5) Set layout keyboard ":             "sudo localectl set-x11-keymap es",
 		"6) Set lightdm greeter-session":      "sudo sed -i 's/#greeter-session=example-gtk-gnome/greeter-session=lightdm-gtk-greeter/' /etc/lightdm/lightdm.conf",
-		"7) Set lightdm display-setup-script": "sudo sed -i 's/#display-setup-script=/display-setup-script=/usr/bin/setxkbmap es/' /etc/lightdm/lightdm.conf",
-		"8) Set lightdm greeter-setup-script": "sudo sed -i 's/#greeter-setup-script=/greeter-setup-script=/usr/bin/numlockx on/' /etc/lightdm/lightdm.conf",
+		"7) Set lightdm display-setup-script": "sudo sed -i 's/#display-setup-script=/display-setup-script=\\/usr\\/bin\\/setxkbmap es/' /etc/lightdm/lightdm.conf",
+		"8) Set lightdm greeter-setup-script": "sudo sed -i 's/#greeter-setup-script=/greeter-setup-script=\\/usr\\/bin\\/numlockx on/' /etc/lightdm/lightdm.conf",
 		"9) Enable lightdm service":           "sudo systemctl enable lightdm",
 	}
 
@@ -273,6 +278,108 @@ func setupENV() bool {
 			log.Printf("Error Docker Settings [%v]: %v\n", k, err)
 			return false
 		}
+	}
+
+	fmt.Println("[Copying config files]")
+
+	path, err := os.Getwd()
+	if err != nil {
+		log.Printf("Error getting the path to change: %v\n", err)
+		return false
+	}
+	path = regexp.MustCompile(`\/utils$`).ReplaceAllString(path, "")
+
+	fmt.Println("- [Changing directory]")
+	err = Shell("cd \"" + path + "\"")
+	if err != nil {
+		log.Printf("Error changing directory: %v\n", err)
+		return false
+	}
+
+	fmt.Println("- [Add permissions to files]")
+	pathToChangePermissions := []string{
+		".config/bspwm/bspwmrc",
+		".config/bspwm/scripts/{bspwm_count,bspwm_layout,bspwm_resize,bspwm_smart_move}",
+	}
+
+	for _, c := range pathToChangePermissions {
+		fmt.Println("- [chmod: " + c + "]")
+		err = Shell("sudo chmod +x $PWD/" + c)
+		if err != nil {
+			log.Printf("Error changing permissions: %v\n", err)
+			return false
+		}
+	}
+
+	fmt.Println("- [Create symbolic links of the files]")
+	symlinkPath := []string{
+		".config/{alacritty,bspwm,gtk-3.0,kitty,picom,polybar,sxhkd,systemd} ~/.config/",
+		"{.aliases,.bashrc,.p10k.zsh,.xprofile,.zshrc,.tmux.conf} ~/",
+	}
+
+	for _, c := range symlinkPath {
+		fmt.Println("- [ln: " + c + "]")
+		err = Shell("ln -sf $PWD/" + c)
+		if err != nil {
+			log.Printf("Error creating symbolic link: %v\n", err)
+			return false
+		}
+	}
+
+	fmt.Println("- [Change default shell per user]")
+	usersShell := []string{
+		"$(whoami)",
+		"root",
+	}
+
+	for _, c := range usersShell {
+		fmt.Println("- [usermod: " + c + "]")
+		err = Shell("sudo usermod --shell /usr/bin/zsh " + c)
+		if err != nil {
+			log.Printf("Error changing user shell: %v\n", err)
+			return false
+		}
+	}
+
+	/*
+	   # Install Oh My Zsh
+	   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+	   # Add plugins and themes
+	   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+
+	   # Install Oh My Zsh for root user
+	   sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+	   # Rest after installation
+	   exit
+
+	   # Create symbolic links of the files to the root user
+	   sudo ln -sf ~/.oh-my-zsh/custom/plugins/{zsh-autosuggestions,zsh-syntax-highlighting} /root/.oh-my-zsh/custom/plugins/
+	   sudo ln -sf ~/.oh-my-zsh/custom/themes/powerlevel10k /root/.oh-my-zsh/custom/themes/
+	   sudo ln -sf ~/{.aliases,.bashrc,.p10k.zsh,.zshrc} /root/
+	*/
+
+	fmt.Println("- [Set Wallpaper]")
+	err = Shell("wget --quiet https://wallpaperaccess.com/full/2098223.png --output-document ~/Images/wallpaper.png")
+	if err != nil {
+		log.Printf("Error downloading the wallpaper: %v\n", err)
+		return false
+	}
+
+	fmt.Println("- [Change power button behavior]")
+	err = Shell("sudo sed -i 's/#HandlePowerKey=poweroff/HandlePowerKey=ignore/' /etc/systemd/logind.conf")
+	if err != nil {
+		log.Printf("Error changing poweroff behavior: %v\n", err)
+		return false
+	}
+
+	err = Shell("sudo systemctl restart systemd-logind")
+	if err != nil {
+		log.Printf("Error restart systemd-logind: %v\n", err)
+		return false
 	}
 
 	return true

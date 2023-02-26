@@ -1,3 +1,14 @@
+openrgb -p default &
 dbus-update-activation-environment --systemd DISPLAY &
-sxhkd &
-exec bspwm
+redshift -O 4500K &
+
+if [ "$XDG_CURRENT_DESKTOP" = "GNOME" ] && [ "$GDMSESSION" != "bspwm" ]; then
+  export XDG_SESSION_TYPE=x11
+  export GDK_BACKEND=x11
+  exec gnome-session
+else
+  sxhkd &
+  exec bspwm
+fi
+# https://askubuntu.com/questions/72549/how-to-determine-which-window-manager-and-desktop-environment-is-running
+# printf 'Desktop: %s\nSession: %s\n' "$XDG_CURRENT_DESKTOP" "$GDMSESSION"

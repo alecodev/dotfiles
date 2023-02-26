@@ -42,6 +42,7 @@ bspc rule -a Google-chrome desktop='^1' follow=on
 bspc rule -a firefox desktop='^2' follow=on
 bspc rule -a DBeaver desktop='^4' follow=on
 bspc rule -a spotify desktop='^0' follow=on
+bspc rule -a KeePassXC desktop='^7' follow=on
 
 # For more check WM_CLASS with command xprop
 

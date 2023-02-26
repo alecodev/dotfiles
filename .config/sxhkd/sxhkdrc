@@ -66,7 +66,7 @@ super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous window in the current desktop
-super + {_,shift + }c
+alt + {_,shift + } Tab
 	bspc node -f {next,prev}.local.!hidden.window
 
 # focus the next/previous desktop in the current monitor
@@ -150,3 +150,7 @@ super + shift + g
 # Open Flameshot
 super + shift + s
 	/usr/bin/flameshot gui
+
+# Open KeePassXC
+super + shift + p
+	/usr/bin/keepassxc
