@@ -23,7 +23,7 @@ mkdir -p ~/Downloads/Chrome
 Execute the following commands
 ```zsh
 echo "--force-dark-mode" >> ~/.config/chrome-flags.conf
-sudo pacman -S noto-fonts-emoji
+sudo pacman -S noto-fonts-emoji noto-fonts-cjk
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 ```
